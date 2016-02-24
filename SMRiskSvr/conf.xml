@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <drtp>
+    <host>117.122.201.144</host>
+    <port>3000</port>
+    <funcno>19900</funcno>
+  </drtp>
+  <oper>
+    <code>SMRiskSvr</code>
+    <passwd></passwd>
+  </oper>
+  <clearances>
+    <clearance>
+      <exchangeid>X</exchangeid>
+      <night>02:25</night>
+      <day>14:55</day>
+    </clearance>
+    <clearance>
+      <exchangeid>Y</exchangeid>
+      <night>23:25</night>
+      <day>16:55</day>
+    </clearance>
+    <clearance>
+      <exchangeid>Z</exchangeid>
+      <night>23:25</night>
+      <day>14:55</day>
+    </clearance>
+    <clearance>
+      <exchangeid>G</exchangeid>
+      <night>14:55</night>
+      <day>14:55</day>
+    </clearance>
+  </clearances>
+  <market>
+    <brokerid>0F8E7D6F</brokerid>
+    <userid>000000</userid>
+    <passwd></passwd>
+    <front>tcp://117.122.201.139:13159</front>
+  </market>
+</configuration>
