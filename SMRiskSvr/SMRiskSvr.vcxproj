@@ -107,8 +107,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>bccclt.lib;KSMarketDataAPI.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)../KSFT-API/win32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bccclt.lib;$(KSFT-API)/win32/KSMarketDataAPI.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -138,8 +139,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>bccclt.lib;KSMarketDataAPI.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)../KSFT-API/win32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bccclt.lib;$(KSFT-API)/win32/KSMarketDataAPI.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
