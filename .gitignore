@@ -1,0 +1,9 @@
+ipch/
+.vs/
+SManager.opensdf
+SManager.sdf
+SManager/Debug
+SManager/Release
+bin/bclog
+bin/SManager.*
+bin/Smanager_d.*
