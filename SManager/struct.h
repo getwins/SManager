@@ -873,3 +873,27 @@ struct inst_market_st
 	double his_highest_price;
 	double his_lowest_price;
 };
+
+struct oper_basic_st
+{
+	char oper_code[16];
+	char oper_name[21];
+	char node_limit[2];
+	char access_limit[2];
+	char oper_status[2];
+	char menu_perm[100];
+	char func_perm[100];
+	char app_flag[201];
+	char perm_temp[7];
+	char menu_perm2[100];
+	char func_perm3[100];
+};
+
+struct oper_cust_correspond_st
+{
+	char oper_code[16];
+	char cust_no[16];
+	char cust_name[21];
+	char cust_class[13];
+	char cust_status[2];
+};

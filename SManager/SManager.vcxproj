@@ -236,6 +236,7 @@
     <ClInclude Include="PositionView.h" />
     <ClInclude Include="ProductDialog.h" />
     <ClInclude Include="PropertiesWnd.h" />
+    <ClInclude Include="ProxyOperSettingDialog.h" />
     <ClInclude Include="QryMoneyInOutDialog.h" />
     <ClInclude Include="QryOrderDialg.h" />
     <ClInclude Include="QryPositionDialog.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="PositionView.cpp" />
     <ClCompile Include="ProductDialog.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
+    <ClCompile Include="ProxyOperSettingDialog.cpp" />
     <ClCompile Include="QryMoneyInOutDialog.cpp" />
     <ClCompile Include="QryOrderDialg.cpp" />
     <ClCompile Include="QryPositionDialog.cpp" />
@@ -360,7 +362,6 @@
     <Image Include="UserImages.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="conf.ini" />
     <None Include="res\SManager.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

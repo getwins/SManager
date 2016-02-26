@@ -22,3 +22,6 @@ BCResult BCRequestSetCustCommissionRate_851304(BCHANDLE handle, char *flag, cust
 BCResult BCRequestQryCustCommissionRate_851305(BCHANDLE handle, char *cust_no, std::vector<cust_commission_rate_st> &o_ccrs);
 BCResult BCRequestSetCustMarginRate_851312(BCHANDLE handle, char *flag, cust_margin_rate_st &cmr);
 BCResult BCRequestQryCustMarginRate_851313(BCHANDLE handle, char *cust_no, std::vector<cust_margin_rate_st> &o_cmrs);
+
+BCResult BCRequestQryOperator_851201(BCHANDLE handle, char *oper_code, oper_basic_st &o_oper_basic);
+BCResult BCRequestQryOperCustCorrespond_851243(BCHANDLE handle, char *oper_code, oper_cust_correspond_st &o_occ);

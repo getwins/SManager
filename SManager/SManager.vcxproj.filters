@@ -192,6 +192,9 @@
     <ClInclude Include="CustMarginDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ProxyOperSettingDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SManager.cpp">
@@ -347,6 +350,9 @@
     <ClCompile Include="CustMarginDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ProxyOperSettingDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SManager.rc">
@@ -470,6 +476,5 @@
     <None Include="res\SManager.rc2">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="conf.ini" />
   </ItemGroup>
 </Project>

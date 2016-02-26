@@ -101,7 +101,6 @@
 #define IDR_MAINFRAME1                  317
 #define ID_VIEW_MARKET                  318
 #define IDR_POPUP_TRADE_SHOW            318
-#define IDR_MAINFRAME2                  318
 #define IDD_LOGINDIALOG                 319
 #define IDD_PRODUCT_DATA                320
 #define IDD_PRODUCT                     320
@@ -139,6 +138,7 @@
 #define IDD_CUST_COMMISSION_RATE_SETTING 382
 #define IDD_CUST_MARGIN_RATE_SETTING    383
 #define IDD_CUST_MARGIN                 384
+#define IDD_PROXY_OPER_SETTING          388
 #define IDC_LIST_POSITION               1000
 #define IDC_RADIO_POSITION              1001
 #define IDC_RADIO_POSITION_DETAIL       1002
@@ -237,6 +237,14 @@
 #define IDC_LIST_CUST_COMMISSION3       1099
 #define IDC_BUTTON_MODIFY               1100
 #define IDC_LIST_CUST_MARGIN_RATE       1101
+#define IDC_EDIT_PROXY_OPER             1102
+#define IDC_LIST_PROXY_CUST             1103
+#define IDC_BUTTON_IN                   1104
+#define IDC_BUTTON_OUT                  1105
+#define IDC_BUTTON_ALL_IN               1106
+#define IDC_BUTTON5                     1107
+#define IDC_BUTTON_ALL_OUT              1107
+#define IDC_STATIC_PROXY_OPER           1109
 #define ID_32772                        32772
 #define ID_32773                        32773
 #define ID_PS_POSITION                  32774
@@ -365,14 +373,16 @@
 #define ID_CUST_COMMISSION_RATE         32923
 #define ID_CUST_MARGIN_RATE             32924
 #define ID_32925                        32925
+#define ID_Menu32926                    32926
+#define ID_PROXY_OPER_SETTING           32927
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        388
-#define _APS_NEXT_COMMAND_VALUE         32926
-#define _APS_NEXT_CONTROL_VALUE         1102
+#define _APS_NEXT_RESOURCE_VALUE        390
+#define _APS_NEXT_COMMAND_VALUE         32928
+#define _APS_NEXT_CONTROL_VALUE         1110
 #define _APS_NEXT_SYMED_VALUE           320
 #endif
 #endif

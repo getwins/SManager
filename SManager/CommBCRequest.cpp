@@ -372,3 +372,67 @@ BCResult BCRequestQryCustMarginRate_851313(BCHANDLE handle, char *cust_no, std::
 
 	return MyBCRequest(handle, fetcher, BCMSG_TOOP);
 }
+
+
+//输出：操作员代码		output : scust_no
+//操作员姓名		sname
+//电话		sphone
+//手机		sphone3
+//地址		saddr
+//邮编		spost_code
+//电子邮件		semail
+//是否限制访问站点		sstatus1
+//是否限制访问		sstatus2
+//操作员状态		sstatus3
+//菜单权限		usset0
+//功能权限		usset1
+//程序标识		scusttypes
+//权限模板代码		sbank_code
+//菜单权限2		usset2
+//功能权限3 		usset3
+
+BCResult BCRequestQryOperator_851201(BCHANDLE handle, char *oper_code, oper_basic_st &o_oper)
+{
+	FetchRowFunc_t fetcher = [&](BCHANDLE handle, int row)
+	{
+		BCGetStringFieldByName(handle, row, "scust_no", o_oper.oper_code, sizeof(o_oper.oper_code));
+		BCGetStringFieldByName(handle, row, "sname", o_oper.oper_name, sizeof(o_oper.oper_name));
+		BCGetStringFieldByName(handle, row, "sstatus1", o_oper.node_limit, sizeof(o_oper.node_limit));
+		BCGetStringFieldByName(handle, row, "sstatus2", o_oper.access_limit, sizeof(o_oper.access_limit));
+		BCGetStringFieldByName(handle, row, "sstatus3", o_oper.oper_status, sizeof(o_oper.oper_status));
+		BCGetStringFieldByName(handle, row, "usset0", o_oper.menu_perm, sizeof(o_oper.menu_perm));
+		BCGetStringFieldByName(handle, row, "usset1", o_oper.func_perm, sizeof(o_oper.func_perm));
+		BCGetStringFieldByName(handle, row, "sbank_code", o_oper.app_flag, sizeof(o_oper.app_flag));
+		BCGetStringFieldByName(handle, row, "usset2", o_oper.menu_perm2, sizeof(o_oper.menu_perm2));
+		BCGetStringFieldByName(handle, row, "usset3", o_oper.func_perm3, sizeof(o_oper.func_perm3));
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 851201);
+	BCSetStringFieldByName(handle, 0, "scust_no2", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "scust_no", oper_code);
+
+	return MyBCRequest(handle, fetcher);
+}
+
+/* 输出：操作员，客户号，客户名称，客户类别，客户状态 */
+//output:sholder_ac_no2, sholder_ac_no, sname, sserial1, sstatus0
+BCResult BCRequestQryOperCustCorrespond_851243(BCHANDLE handle, char *oper_code, oper_cust_correspond_st &o_occ)
+{
+	FetchRowFunc_t fetcher = [&](BCHANDLE handle, int row)
+	{
+		BCGetStringFieldByName(handle, row, "sholder_ac_no2", o_occ.oper_code, sizeof(o_occ.oper_code));
+		BCGetStringFieldByName(handle, row, "sholder_ac_no", o_occ.cust_no, sizeof(o_occ.cust_no));
+		BCGetStringFieldByName(handle, row, "sname", o_occ.cust_name, sizeof(o_occ.cust_name));
+		BCGetStringFieldByName(handle, row, "sserial1", o_occ.cust_class, sizeof(o_occ.cust_class));
+		BCGetStringFieldByName(handle, row, "sstatus0", o_occ.cust_status, sizeof(o_occ.cust_status));
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 851243);
+	BCSetStringFieldByName(handle, 0, "scust_no2", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "scust_no", oper_code);
+	BCSetStringFieldByName(handle, 0, "sstatus0", "1");
+
+	return MyBCRequest(handle, fetcher);
+}
