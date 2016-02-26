@@ -19,3 +19,5 @@ bin/SMPerm.*
 bin/SMPerm_d.*
 
 bin/bclog
+
+*.aps
