@@ -68,7 +68,7 @@ bool CModifyOperPasswdDialog::RequestModifyOperPasswd_851210()
 	Scoped_BCHANDLE handle;
 	BCSetRequestType(handle, 851210);
 	BCSetStringFieldByName(handle, 0, "scust_no2", g_cfg.oper_code);
-	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "scust_no", m_OperTitle.GetBuffer());
 	BCSetStringFieldByName(handle, 0, "stx_pwd2", g_cfg.oper_passwd);
 	BCSetStringFieldByName(handle, 0, "swithdraw_pwd2", m_NewPasswd.GetBuffer());
 	return MyBCRequest(handle, FetchRowFunc_t(), BCMSG_TOALL);

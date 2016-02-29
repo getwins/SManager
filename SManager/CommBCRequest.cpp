@@ -374,6 +374,23 @@ BCResult BCRequestQryCustMarginRate_851313(BCHANDLE handle, char *cust_no, std::
 }
 
 
+BCResult BCRequestSetOperator_851200(BCHANDLE handle, char *flag, oper_basic_st ob)
+{
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 851200);
+	BCSetStringFieldByName(handle, 0, "scust_no2", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sname", ob.oper_name);
+	BCSetStringFieldByName(handle, 0, "sstatus0", flag);
+	BCSetStringFieldByName(handle, 0, "scust_no",ob.oper_code);
+	BCSetStringFieldByName(handle, 0, "sstatus1", ob.node_limit);
+	BCSetStringFieldByName(handle, 0, "sstatus2", ob.access_limit);
+	BCSetStringFieldByName(handle, 0, "sstatus3", ob.oper_status);
+	BCSetStringFieldByName(handle, 0, "usset0", ob.menu_perm);
+	BCSetStringFieldByName(handle, 0, "usset1", ob.func_perm);
+	
+	return MyBCRequest(handle);
+}
+
 //输出：操作员代码		output : scust_no
 //操作员姓名		sname
 //电话		sphone
@@ -415,17 +432,31 @@ BCResult BCRequestQryOperator_851201(BCHANDLE handle, char *oper_code, oper_basi
 	return MyBCRequest(handle, fetcher);
 }
 
+BCResult BCRequestSetOperCustCorrespond_851206(BCHANDLE handle, char *flag, char *oper_code, char *cust_no)
+{
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 851206);
+	BCSetStringFieldByName(handle, 0, "scust_no2", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sstatus0", flag);
+	BCSetStringFieldByName(handle, 0, "scust_no", oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", cust_no);
+	
+	return MyBCRequest(handle);
+}
+
 /* 输出：操作员，客户号，客户名称，客户类别，客户状态 */
 //output:sholder_ac_no2, sholder_ac_no, sname, sserial1, sstatus0
-BCResult BCRequestQryOperCustCorrespond_851243(BCHANDLE handle, char *oper_code, oper_cust_correspond_st &o_occ)
+BCResult BCRequestQryOperCustCorrespond_851243(BCHANDLE handle, char *oper_code, std::vector<oper_cust_correspond_st> &o_occs)
 {
 	FetchRowFunc_t fetcher = [&](BCHANDLE handle, int row)
 	{
-		BCGetStringFieldByName(handle, row, "sholder_ac_no2", o_occ.oper_code, sizeof(o_occ.oper_code));
-		BCGetStringFieldByName(handle, row, "sholder_ac_no", o_occ.cust_no, sizeof(o_occ.cust_no));
-		BCGetStringFieldByName(handle, row, "sname", o_occ.cust_name, sizeof(o_occ.cust_name));
-		BCGetStringFieldByName(handle, row, "sserial1", o_occ.cust_class, sizeof(o_occ.cust_class));
-		BCGetStringFieldByName(handle, row, "sstatus0", o_occ.cust_status, sizeof(o_occ.cust_status));
+		oper_cust_correspond_st occ = { 0 };
+		BCGetStringFieldByName(handle, row, "sholder_ac_no2", occ.oper_code, sizeof(occ.oper_code));
+		BCGetStringFieldByName(handle, row, "sholder_ac_no", occ.cust_no, sizeof(occ.cust_no));
+		BCGetStringFieldByName(handle, row, "sname", occ.cust_name, sizeof(occ.cust_name));
+		BCGetStringFieldByName(handle, row, "sserial1", occ.cust_class, sizeof(occ.cust_class));
+		BCGetStringFieldByName(handle, row, "sstatus0", occ.cust_status, sizeof(occ.cust_status));
+		o_occs.push_back(occ);
 	};
 
 	BCResetHandle(handle);

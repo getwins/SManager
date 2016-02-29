@@ -484,6 +484,60 @@ BEGIN
     END
 END
 
+IDR_MAINFRAME2 MENU
+BEGIN
+    POPUP "系统"
+    BEGIN
+        MENUITEM "系统信息",                        ID_SYSTEM_INFO
+        MENUITEM "代理操作员设置",                     ID_PROXY_OPER_SETTING
+        MENUITEM "提示音",                         ID_MESSAGEBEE
+        MENUITEM "修改操作员密码",                     ID_MODIFY_PASSWD
+        MENUITEM "清除缓存文件",                      ID_CLEAR_CACHE
+        MENUITEM "退出",                          ID_APP_EXIT
+    END
+    POPUP "视图(&V)"
+    BEGIN
+        POPUP "工具栏和停靠窗口(&T)"
+        BEGIN
+            MENUITEM "<占位符>",                       ID_VIEW_TOOLBAR
+        END
+        MENUITEM "状态栏(&S)",                     ID_VIEW_STATUS_BAR
+        POPUP "应用程序外观(&A)"
+        BEGIN
+            MENUITEM "Windows 2000(&2)",            ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office XP(&X)",               ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "Windows XP(&W)",              ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 2003(&3)",             ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio 200&5",         ID_VIEW_APPLOOK_VS_2005
+            MENUITEM "Visual Studio 200&8",         ID_VIEW_APPLOOK_VS_2008
+            POPUP "Office 2007(&7)"
+            BEGIN
+                MENUITEM "蓝色样式(&B)",                    ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "黑色样式(&L)",                    ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "银色样式(&S)",                    ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "水绿色样式(&A)",                   ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "交易管理"
+    BEGIN
+        MENUITEM "品种数据",                        ID_PRODUCT_DATA
+        MENUITEM "合约数据",                        ID_INSTRUMENT_DATA
+        MENUITEM SEPARATOR
+        MENUITEM "手续费模板管理",                     ID_COMMISSION_MANAGE
+        MENUITEM "保证金模板管理",                     ID_MARGIN_MANAGE
+    END
+    POPUP "帐户查询"
+    BEGIN
+        MENUITEM "历史委托查询",                      ID_ORDER_QUERY
+        MENUITEM "历史持仓查询",                      ID_POSITION_QUERY
+        MENUITEM "历史成交查询",                      ID_TRADE_QUERY
+        MENUITEM "结算单",                         ID_SETTLEMENT_QUERY
+        MENUITEM "出入金查询",                       ID_QUERY_MONEY_IN_OUT
+    END
+    MENUITEM "帮助",                          ID_32890
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -795,7 +849,7 @@ BEGIN
     RTEXT           "新密码确认",IDC_STATIC,9,114,51,8
     EDITTEXT        IDC_EDIT_NEW_PASSWD,76,79,81,14,ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_NEW_CONFIRM,76,110,81,14,ES_PASSWORD | ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_OPER_TITLE,15,18,149,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT_OPER_TITLE,15,18,149,14,ES_AUTOHSCROLL
 END
 
 IDD_QUERY_SETTLEMENT DIALOGEX 0, 0, 553, 363
@@ -1710,6 +1764,11 @@ STRINGTABLE
 BEGIN
     ID_MESSAGEBEE           "客户强平后提示声音"
     ID_PROXY_OPER_SETTING   "新增代码操作员及操作员代理客户设置"
+END
+
+STRINGTABLE
+BEGIN
+    IDR_MAINFRAME2          "SManager\n\nSManager\n\n\nSManager.Document\nSManager.Document"
 END
 
 #endif    // 中文(简体，中国) resources

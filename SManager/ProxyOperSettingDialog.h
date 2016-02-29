@@ -34,4 +34,5 @@ public:
 	CString m_ProxyOperCode;
 	CListBox m_ctlCust;
 	CListBox m_ctlProxyCust;
+	virtual BOOL OnInitDialog();
 };

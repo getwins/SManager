@@ -30,6 +30,7 @@
 #include "ModifyOperPasswdDialog.h"
 #include "QrySettlementDialog.h"
 #include "SysInfoDialog.h"
+#include "ProxyOperSettingDialog.h"
 //#include "CustMoneyInOutDialog.h"
 //#include "ShowAllCustPosition.h"
 
@@ -109,11 +110,11 @@ void load_conf()
 	//g_cfg.oper_code = ptree.get<std::string>("oper.code");
 	//g_cfg.oper_passwd = ptree.get<std::string>("oper.passwd");
 	//ptree.get<char*>("oper.code");
-
 	std::string code = ptree.get<std::string>("oper.code");
 	code.copy(g_cfg.oper_code, sizeof(g_cfg.oper_code) - 1);
 	std::string passwd = ptree.get<std::string>("oper.passwd");
 	passwd.copy(g_cfg.oper_passwd, sizeof(g_cfg.oper_passwd) - 1);
+	g_cfg.oper_type = ptree.get<int>("oper.type", 0);
 
 	g_cfg.bccall_timeout = ptree.get<int>("timeout.bccall", 20000);
 	g_cfg.login_interval = ptree.get<int>("interval.login", 10);
@@ -349,6 +350,7 @@ BEGIN_MESSAGE_MAP(CSManagerApp, CWinAppEx)
 	//ON_COMMAND(ID_SHOW_ALL_CUST_POSITION, &CSManagerApp::OnShowAllCustPosition)
 	ON_COMMAND(ID_MESSAGEBEE, &CSManagerApp::OnMessagebee)
 	ON_UPDATE_COMMAND_UI(ID_MESSAGEBEE, &CSManagerApp::OnUpdateMessagebee)
+	ON_COMMAND(ID_PROXY_OPER_SETTING, &CSManagerApp::OnProxyOperSetting)
 END_MESSAGE_MAP()
 
 
@@ -433,31 +435,47 @@ void CSManagerApp::PreRequestCustInfo()
 		
 	};
 
-	//MyBCCLTInit();
-	//BCHANDLE handle = BCNewHandle(XpackDescribleFile);
-	Scoped_BCHANDLE handle;
-	BCResetHandle(handle);
-	//BCSetRequestType(handle, 851002);
-	BCSetRequestType(handle, 859999);
 
-	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);//操作员
-	//BCSetStringFieldByName(handle, 0, "sstatus1", "0"); //客户状态
-	BCSetStringFieldByName(handle, 0, "sstatus0", "1"); //客户性质
-	BCSetStringFieldByName(handle, 0, "scust_no2", g_cfg.oper_code);//开户操作员
-	BCSetStringFieldByName(handle, 0, "sstatus2", "0"); //是否包含销户客户
-	BCSetStringFieldByName(handle, 0, "sstatus3", "1"); //是否包含冻结客户
-	if (MyBCRequest(handle, fetcher))
-		PostOutputMsg("查询客户资料成功.");
-	else 
-		PostOutputMsg("查询客户资料失败.");
-	//for each (cust_base_info_st cbi in m_CustBaseInfos)
+	Scoped_BCHANDLE handle;
+
+	if (g_cfg.oper_type == 0)
+	{
+		BCSetRequestType(handle, 859999);
+
+		BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);//操作员
+																	   //BCSetStringFieldByName(handle, 0, "sstatus1", "0"); //客户状态
+		BCSetStringFieldByName(handle, 0, "sstatus0", "1"); //客户性质
+		BCSetStringFieldByName(handle, 0, "scust_no2", g_cfg.oper_code);//开户操作员
+		BCSetStringFieldByName(handle, 0, "sstatus2", "0"); //是否包含销户客户
+		BCSetStringFieldByName(handle, 0, "sstatus3", "1"); //是否包含冻结客户
+		if (MyBCRequest(handle, fetcher))
+			PostOutputMsg("查询客户资料成功.");
+		else
+			PostOutputMsg("查询客户资料失败.");
+		//for each (cust_base_info_st cbi in m_CustBaseInfos)
+		
+	}
+	else if (g_cfg.oper_type == 1)
+	{
+		BCResult result;
+		std::vector<oper_cust_correspond_st> occs;
+		result = BCRequestQryOperCustCorrespond_851243(handle, g_cfg.oper_code, occs);
+		for each (oper_cust_correspond_st var in occs)
+		{
+			cust_base_info_st bi = { 0 };
+			result = BCRequestCustBasic_850003(handle, var.cust_no, bi.basic);
+			AddCust(bi);
+		}
+	}
+
 	for (auto it = m_CustBaseInfos.begin(); it != m_CustBaseInfos.end(); ++it)
 	{
-		
+
 		PreRequestCustCommissionTemplate(handle, *it);
 		PreRequestCustMarginTemplate(handle, *it);
 		BCRequestRC_860000(handle, it->basic.scust_no, "", "", it->rcs);
 	}
+	
 	//BCDeleteHandle(handle);
 
 	//cust_dynamic_info_worker::instance()->start();
@@ -1160,7 +1178,7 @@ BOOL CSManagerApp::InitInstance()
 	CSingleDocTemplate* pDocTemplate;
 	pDocTemplate = new CSingleDocTemplate(
 		//IDR_MAINFRAME,
-		IDR_MAINFRAME1,
+		g_cfg.oper_type == 0 ? IDR_MAINFRAME1 : IDR_MAINFRAME2,
 		RUNTIME_CLASS(CSManagerDoc),
 		RUNTIME_CLASS(CMainFrame),       // 主 SDI 框架窗口
 		RUNTIME_CLASS(CSManagerView));
@@ -1655,4 +1673,13 @@ void CSManagerApp::OnUpdateMessagebee(CCmdUI *pCmdUI)
 {
 	// TODO: 在此添加命令更新用户界面处理程序代码
 	pCmdUI->SetCheck(m_bMsgBee);
+}
+
+
+void CSManagerApp::OnProxyOperSetting()
+{
+	// TODO: 在此添加命令处理程序代码
+	CProxyOperSettingDialog dlg;
+	dlg.DoModal();
+
 }

@@ -63,6 +63,7 @@ CMainFrame::CMainFrame()
 	// TODO: 在此添加成员初始化代码
 	//theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_OFF_XP);
+	m_bAutoMenuEnable = FALSE;
 }
 
 CMainFrame::~CMainFrame()
@@ -81,6 +82,27 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("未能创建菜单栏\n");
 		return -1;      // 未能创建
 	}
+
+	//m_wndMenuBar.GetMenu()->GetSubMenu(2)->GetMenuItemCount
+	//if (g_cfg.oper_type == 1)
+	//{
+	//	CMenu *menu = CMenu::FromHandle(m_wndMenuBar.GetDefaultMenu());
+	//	//menu = menu->GetSubMenu(0);
+	//	menu = menu->GetSubMenu(2);
+	//	//menu->Ena
+	//	//m_wndMenuBar.get
+	//	//m_wndMenuBar.GetMenuItem(2)->EnableWindow(FALSE);
+	//	////menu->get
+	//	//menu = menu->GetSubMenu(0);
+	//	//menu = menu->GetSubMenu(2);
+	//	for (int i = 0; i < menu->GetMenuItemCount(); i++) {
+	//		menu->EnableMenuItem(i, MF_BYPOSITION | MF_GRAYED);
+	//		CString str;
+	//		menu->GetMenuString(i, str, MF_BYPOSITION);
+	//		TRACE0(str);
+	//	}
+	//		
+	//}
 
 	m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
 

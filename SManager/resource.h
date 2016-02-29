@@ -101,6 +101,7 @@
 #define IDR_MAINFRAME1                  317
 #define ID_VIEW_MARKET                  318
 #define IDR_POPUP_TRADE_SHOW            318
+#define IDR_MAINFRAME3                  318
 #define IDD_LOGINDIALOG                 319
 #define IDD_PRODUCT_DATA                320
 #define IDD_PRODUCT                     320
@@ -133,6 +134,7 @@
 #define IDD_CUST_RISK_CONTROL_SETTING   374
 #define IDR_POPUP_CLOSE_POSITION        376
 #define IDR_TOOLBAR_CAPITAL_SUMMARY     377
+#define IDR_MAINFRAME2                  377
 #define IDI_ICON1                       380
 #define IDD_CUST_COMMISSION             381
 #define IDD_CUST_COMMISSION_RATE_SETTING 382
@@ -242,7 +244,6 @@
 #define IDC_BUTTON_IN                   1104
 #define IDC_BUTTON_OUT                  1105
 #define IDC_BUTTON_ALL_IN               1106
-#define IDC_BUTTON5                     1107
 #define IDC_BUTTON_ALL_OUT              1107
 #define IDC_STATIC_PROXY_OPER           1109
 #define ID_32772                        32772

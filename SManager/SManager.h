@@ -69,6 +69,7 @@ struct user_config
 	int funcno;
 	//std::string oper_code;
 	//std::string oper_passwd;
+	int oper_type;
 	char oper_code[11];
 	char oper_passwd[9];
 
@@ -238,6 +239,7 @@ public:
 //	afx_msg void OnShowAllCustPosition();
 	afx_msg void OnMessagebee();
 	afx_msg void OnUpdateMessagebee(CCmdUI *pCmdUI);
+	afx_msg void OnProxyOperSetting();
 };
 
 extern CSManagerApp theApp;
