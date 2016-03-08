@@ -20,6 +20,6 @@ bin/SMPerm_d.*
 
 bin/bclog
 
-*/*.aps
-*/*.vcxproj.user
-*/*.vcxproj.filters
+*.aps
+*.vcxproj.user
+*.vcxproj.filters
