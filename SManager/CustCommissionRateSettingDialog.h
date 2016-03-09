@@ -35,4 +35,5 @@ public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 	double m_ByVol;
+	afx_msg void OnCbnSelchangeComboExchange();
 };

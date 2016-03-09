@@ -45,6 +45,7 @@ void CCustCommissionRateSettingDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CCustCommissionRateSettingDialog, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CCustCommissionRateSettingDialog::OnBnClickedOk)
+	ON_CBN_SELCHANGE(IDC_COMBO_EXCHANGE, &CCustCommissionRateSettingDialog::OnCbnSelchangeComboExchange)
 END_MESSAGE_MAP()
 
 BOOL CCustCommissionRateSettingDialog::OnInitDialog()
@@ -114,3 +115,11 @@ void CCustCommissionRateSettingDialog::OnBnClickedOk()
 }
 
 
+
+
+void CCustCommissionRateSettingDialog::OnCbnSelchangeComboExchange()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CString exchangeid = m_ctlExchange.GetCurSelKey();
+	m_ctlProduct.FilterByExchangeid(exchangeid);
+}

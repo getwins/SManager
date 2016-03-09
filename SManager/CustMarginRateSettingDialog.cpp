@@ -37,6 +37,7 @@ void CCustMarginRateSettingDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CCustMarginRateSettingDialog, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CCustMarginRateSettingDialog::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CCustMarginRateSettingDialog::OnBnClickedCancel)
+	ON_CBN_SELCHANGE(IDC_COMBO_EXCHANGE, &CCustMarginRateSettingDialog::OnCbnSelchangeComboExchange)
 END_MESSAGE_MAP()
 
 BOOL CCustMarginRateSettingDialog::OnInitDialog()
@@ -100,3 +101,11 @@ void CCustMarginRateSettingDialog::OnBnClickedCancel()
 }
 
 
+
+
+void CCustMarginRateSettingDialog::OnCbnSelchangeComboExchange()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CString exchangeid = m_ctlExchange.GetCurSelKey();
+	m_ctlProduct.FilterByExchangeid(exchangeid);
+}

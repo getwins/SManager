@@ -1039,7 +1039,7 @@ void SetWindowsCaption()
 	it2 = std::find_if(theApp.m_perms.begin(), theApp.m_perms.end(), [](oper_sm_perm_st &perm) { return strcmp(perm.type, "002") == 0; });
 
 	CString caption;
-	caption.Format("后台管理系统 v0.3-%s 开户数量:%s 使用期限:%s",
+	caption.Format("后台管理系统 v0.4-%s 开户数量:%s 使用期限:%s",
 		g_cfg.oper_code, 
 		(it1 == theApp.m_perms.end() ? "无设置" : it1->param),
 		(it2 == theApp.m_perms.end() ? "无设置" : it2->param));

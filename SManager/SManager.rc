@@ -1039,6 +1039,7 @@ BEGIN
     EDITTEXT        IDC_EDIT_BYAMOUNT,61,124,53,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_BYVOLUME,136,124,53,14,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO_CUST,40,14,64,105,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "日期格式：mmdd",IDC_STATIC,217,31,63,8,WS_DISABLED
 END
 
 IDD_CUST_MARGIN_RATE_SETTING DIALOGEX 0, 0, 219, 181
@@ -1106,8 +1107,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,3,0,1
- PRODUCTVERSION 0,3,0,0
+ FILEVERSION 0,4,0,1
+ PRODUCTVERSION 0,4,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1124,12 +1125,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "TODO: getwin"
             VALUE "FileDescription", "SManager"
-            VALUE "FileVersion", "0.3.0.1"
+            VALUE "FileVersion", "0.4.0.1"
             VALUE "InternalName", "SManager.exe"
             VALUE "LegalCopyright", "TODO:  (C) getwin。  保留所有权利。"
             VALUE "OriginalFilename", "SManager.exe"
             VALUE "ProductName", "TODO: SManager"
-            VALUE "ProductVersion", "0.3.0.0"
+            VALUE "ProductVersion", "0.4.0.0"
         END
     END
     BLOCK "VarFileInfo"
