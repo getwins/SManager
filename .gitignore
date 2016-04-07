@@ -7,6 +7,10 @@ SManager/Debug
 SManager/Release
 bin/SManager.*
 bin/Smanager_d.*
+SManager/Proxy_Debug
+SManager/Proxy_Release
+bin/SManagerp.*
+bin/Smanagerp_d.*
 
 SMRiskSvr/Debug
 SMRiskSvr/Release
@@ -19,7 +23,6 @@ bin/SMPerm.*
 bin/SMPerm_d.*
 
 bin/bclog
-
+back/
 *.aps
 *.vcxproj.user
-*.vcxproj.filters
