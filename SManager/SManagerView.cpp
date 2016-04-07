@@ -149,7 +149,13 @@ void CSManagerView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
 #ifndef SHARED_HANDLERS
 	//theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
+	//if(g_cfg.oper_type == 0)
+	//	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_CUST_OPERATE, point.x, point.y, this, FALSE);
+#ifdef _OPER_PROXY
+	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_CUST_PROXY_QUERY, point.x, point.y, this, FALSE);
+#else
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_CUST_OPERATE, point.x, point.y, this, FALSE);
+#endif
 #endif
 }
 

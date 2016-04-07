@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <cassert>
+#include <sstream>
 //#include <bind>
 #include "cust_dynamic_info_worker.h"
 #include "string_identifer.h"
@@ -10,6 +11,181 @@
 
 static cust_dynamic_info_worker *singleton = NULL;
 
+system_info_st sysinfo_;
+std::map<std::string, cust_dynamic_info_st> info_;
+std::mutex mutex_;
+//std::mutex si_mutex_;
+std::condition_variable cv_;
+std::set<int> force_orderseqs_;
+
+uintptr_t login_thread = 0;
+uintptr_t capital_thread = 0;
+
+unsigned _stdcall request_cust_login_proc(void* param)
+{
+	std::ostringstream oss;
+	oss << "客户登录信息查询线程thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
+	PostOutputMsg(oss.str());
+
+	Scoped_BCHANDLE handle;
+	BCResult result;
+	for (;;)
+	{
+		std::vector<std::string> custs = theApp.GetCustnoList();
+		for each (std::string cust_no in custs)
+		{
+			result = BCRequestCustLoginInfo_854093(handle, cust_no, info_[cust_no].login_info);
+
+			::PostMessage(theApp.GetMainWnd()->GetSafeHwnd(),
+				WM_USER_CUST_DYNAMIC_INFO,
+				CUST_DYNAMIC_LOGIN_INFO_CHANGED,
+				get_identifer(cust_no));
+		}
+
+		time_t n = time(NULL);
+		double diff = difftime(n, sysinfo_.request_time);
+		if (sysinfo_.system_status[0] == '1') {
+			//开盘状态5分钟请求一次
+			if (diff > 300) {
+				result = BCRequestSysInfo_100319(handle, sysinfo_);
+			}
+		}
+		else {
+			//非开盘状态1分钟请求一次
+			if (diff > 60) {
+				result = BCRequestSysInfo_100319(handle, sysinfo_);
+			}
+		}
+
+		std::this_thread::sleep_for(std::chrono::seconds(g_cfg.login_interval));
+	}
+	return 0;
+}
+
+void update_cust_position_order_trade(BCHANDLE handle, cust_base_info_st &cbi)
+{
+	BCResult result;
+	std::string cust_no = cbi.basic.scust_no;
+
+	PosiVec_t &positions = info_[cust_no].positions;
+	result = BCRequestCustPosition_854048(handle, cust_no, positions);
+	for (PosiVec_t::iterator it = positions.begin(); it != positions.end(); ++it)
+	{
+		BCRequestPosiOffsetVolume_854058(handle, *it);
+	}
+
+	result = BCRequestCustPosiDetail_854186(handle, cust_no, info_[cust_no].posi_detail);
+
+	OrderVec_t &orders = info_[cust_no].orders;
+	result = BCRequestCustOrder_854094(handle, cust_no, orders);
+	bool new_force = false;
+	for (OrderVec_t::iterator it = orders.begin(); it != orders.end(); ++it)
+	{
+		if (it->force_close[0] != '0' && force_orderseqs_.find(it->orderseq) == force_orderseqs_.end())
+		{
+			if (theApp.m_bMsgBee)
+				for (int i = 0; i < 5; i++) MessageBeep(MB_ICONINFORMATION);
+			force_orderseqs_.insert(it->orderseq);
+			new_force = true;
+		}
+	}
+
+	//if (new_force)
+	//{
+	//	cust_basic_st cb = { 0 };
+	//	result = BCRequestCustBasic_850003(handle, (char*)cust_no.c_str(), cb);
+	//	if (!(cbi.basic == cb))
+	//	{
+	//		cbi.basic = cb;
+	//		theApp.SetCustBaseInfo(cbi);
+	//	}
+	//		
+	//}
+
+	result = BCRequestCustTrade_854095(handle, cust_no, info_[cust_no].trades);
+
+	::PostMessage(
+		theApp.GetMainWnd()->GetSafeHwnd(),
+		WM_USER_CUST_DYNAMIC_INFO,
+		CUST_DYNAMIC_POSITION_CHANGED,
+		get_identifer(cust_no));
+
+	::PostMessage(
+		theApp.GetMainWnd()->GetSafeHwnd(),
+		WM_USER_CUST_DYNAMIC_INFO,
+		CUST_DYNAMIC_POSI_DETAIL_CHANGED,
+		get_identifer(cust_no));
+
+	::PostMessage(
+		theApp.GetMainWnd()->GetSafeHwnd(),
+		WM_USER_CUST_DYNAMIC_INFO,
+		CUST_DYNAMIC_ORDER_CHANGED,
+		get_identifer(cust_no));
+
+	::PostMessage(
+		theApp.GetMainWnd()->GetSafeHwnd(),
+		WM_USER_CUST_DYNAMIC_INFO,
+		CUST_DYNAMIC_TRADE_CHANGED,
+		get_identifer(cust_no));
+}
+
+unsigned _stdcall request_cust_capital_proc(void* param)
+{
+	cust_dynamic_info_worker *ptr = (cust_dynamic_info_worker *)(param);
+	std::ostringstream oss;
+	oss << "客户权益查询线程thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
+	PostOutputMsg(oss.str());
+
+	Scoped_BCHANDLE handle;
+	BCResult result;
+
+	for (int i = 0;; i++)
+	{
+		if (i == 0 || sysinfo_.request_time == 0 || sysinfo_.system_status[0] == '0' || sysinfo_.system_status[0] == '1') 
+		{
+			for each(cust_base_info_st cbi in theApp.GetCustBaseInfoList())
+			{
+				std::string cust_no = cbi.basic.scust_no;
+
+				/**实时查询客户状态
+				*小林要求同一操作员登录不同的SManager，客户状态同步
+				*/
+				cust_basic_st cb = { 0 };
+				result = BCRequestCustBasic_850003(handle, (char*)cust_no.c_str(), cb);
+				if (!(cbi.basic == cb))
+				{
+					cbi.basic = cb;
+					theApp.SetCustBaseInfo(cbi);
+				}
+		
+				cust_capital_st rc = { 0 };
+				cust_capital_st &lc = info_[cust_no].captial;
+				result = BCRequestCustCapital_854196(handle, cust_no, rc);
+				std::unique_lock<std::mutex> lck(mutex_);
+				if (lc == rc)
+					continue;
+
+				if (lc.commission != rc.commission
+					|| lc.frzn_commission != rc.frzn_commission
+					|| lc.margin != rc.margin
+					|| lc.buy_frzn_margin != rc.buy_frzn_margin
+					|| lc.sell_frzn_margin != rc.sell_frzn_margin)
+				{
+					update_cust_position_order_trade(handle, cbi);
+				}
+
+				lc = rc;
+				::PostMessage(theApp.GetMainWnd()->GetSafeHwnd(),
+					WM_USER_CUST_DYNAMIC_INFO,
+					CUST_DYNAMIC_CAPITAL,
+					get_identifer(cust_no));
+
+			}
+		}
+		std::this_thread::sleep_for(std::chrono::seconds(g_cfg.capital_interval));
+	}
+	return 0;
+}
 
 cust_dynamic_info_worker * cust_dynamic_info_worker::instance()
 {
@@ -22,10 +198,26 @@ cust_dynamic_info_worker * cust_dynamic_info_worker::instance()
 
 void cust_dynamic_info_worker::start()
 {
-	cust_login_info_thr_.reset(
-		new std::thread(std::bind(&cust_dynamic_info_worker::loop_request_cust_login_info, this)));
-	cust_captial_thr_.reset(
-		new std::thread(std::bind(&cust_dynamic_info_worker::loop_request_cust_capital, this)));
+	if (login_thread == 0)
+	{
+		login_thread = _beginthreadex(NULL, 0, request_cust_login_proc, NULL, 0, NULL);
+	}
+
+	if (capital_thread == 0)
+	{
+		capital_thread = _beginthreadex(NULL, 0, request_cust_capital_proc, NULL, 0, NULL);
+	}
+	
+	
+	//cust_login_info_thr_.reset(
+	//	new std::thread(std::bind(&cust_dynamic_info_worker::loop_request_cust_login_info, this)));
+	//cust_captial_thr_.reset(
+	//	new std::thread(std::bind(&cust_dynamic_info_worker::loop_request_cust_capital, this)));
+
+	//cust_login_info_thr_.reset(
+	//	new boost::thread(boost::bind(&cust_dynamic_info_worker::loop_request_cust_login_info, this)));
+	//cust_captial_thr_.reset(
+	//	new boost::thread(boost::bind(&cust_dynamic_info_worker::loop_request_cust_capital, this)));
 	//cust_basic_thr_.reset(
 	//	new std::thread(std::bind(&cust_dynamic_info_worker::loop_request_cust_basic, this)));
 	//cust_position_thr_.reset(
@@ -41,19 +233,24 @@ void cust_dynamic_info_worker::start()
 
 void cust_dynamic_info_worker::stop()
 {
-	cv_.notify_all();
+	//if (login_thread)
+	//	_endthreadex(login_thread);
 
-	if(cust_login_info_thr_)
-		if(cust_login_info_thr_->joinable())
-			cust_login_info_thr_->join();
+	//if(capital_thread)
+	//	_endthreadex(capital_thread);
+	//cv_.notify_all();
 
-	if(cust_captial_thr_)
-		if(cust_captial_thr_->joinable())
-			cust_captial_thr_->join();
+	//if(cust_login_info_thr_)
+	//	if(cust_login_info_thr_->joinable())
+	//		cust_login_info_thr_->join();
 
-	if (cust_basic_thr_)
-		if (cust_basic_thr_->joinable())
-			cust_basic_thr_->join();
+	//if(cust_captial_thr_)
+	//	if(cust_captial_thr_->joinable())
+	//		cust_captial_thr_->join();
+
+	//if (cust_basic_thr_)
+	//	if (cust_basic_thr_->joinable())
+	//		cust_basic_thr_->join();
 
 	//if(cust_position_thr_)
 	//	if(cust_position_thr_->joinable())
@@ -72,6 +269,55 @@ void cust_dynamic_info_worker::stop()
 	//		cust_trade_thr_->join();
 }
 
+const cust_login_info_st & cust_dynamic_info_worker::get_cust_login_info(const std::string & cust_no)
+{
+	// TODO: 在此处插入 return 语句
+	std::unique_lock<std::mutex> lkc(mutex_);
+	return info_[cust_no].login_info;
+
+}
+
+const cust_capital_st & cust_dynamic_info_worker::get_cust_capital(const std::string & cust_no)
+{
+	// TODO: 在此处插入 return 语句
+	std::unique_lock<std::mutex> lkc(mutex_);
+	return info_[cust_no].captial;
+}
+
+const PosiVec_t& cust_dynamic_info_worker::get_cust_position(const std::string & cust_no)
+{
+	// TODO: 在此处插入 return 语句
+	std::unique_lock<std::mutex> lkc(mutex_);
+	return info_[cust_no].positions;
+}
+
+const PosiDetailVec_t& cust_dynamic_info_worker::get_cust_posi_detail(const std::string & cust_no)
+{
+	// TODO: 在此处插入 return 语句
+	std::unique_lock<std::mutex> lkc(mutex_);
+	return info_[cust_no].posi_detail;
+}
+
+const OrderVec_t& cust_dynamic_info_worker::get_cust_order(const std::string & cust_no)
+{
+	// TODO: 在此处插入 return 语句
+	std::unique_lock<std::mutex> lkc(mutex_);
+	return info_[cust_no].orders;
+}
+
+const TradeVec_t& cust_dynamic_info_worker::get_cust_trade(const std::string & cust_no)
+{
+	// TODO: 在此处插入 return 语句
+	std::unique_lock<std::mutex> lkc(mutex_);
+	return info_[cust_no].trades;
+}
+
+const system_info_st & cust_dynamic_info_worker::get_sysinfo()
+{
+	// TODO: 在此处插入 return 语句
+	return sysinfo_;
+}
+
 cust_dynamic_info_worker::cust_dynamic_info_worker()
 {
 	memset(&sysinfo_, 0, sizeof(sysinfo_));
@@ -83,7 +329,12 @@ cust_dynamic_info_worker::~cust_dynamic_info_worker()
 }
 
 void cust_dynamic_info_worker::loop_request_cust_login_info()
+try
 {
+	std::ostringstream oss;
+	oss << "客户登录信息查询线程thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
+	PostOutputMsg(oss.str());
+
 	auto fetcher = [this](const std::string &cust_no, BCHANDLE handle, int row) {
 		cust_login_info_st li = {0};
 		char sholder_ac_no[16] = { 0 };
@@ -100,7 +351,7 @@ void cust_dynamic_info_worker::loop_request_cust_login_info()
 		if (li.login_status[0] != '1')
 			li.login_status[0] = '0';
 		std::unique_lock<std::mutex> lck(mutex_);
-		this->info_[cust_no].login_info = li;
+		info_[cust_no].login_info = li;
 	};
 	//BCHANDLE handle = BCNewHandle(XpackDescribleFile);
 	Scoped_BCHANDLE handle;
@@ -136,17 +387,33 @@ void cust_dynamic_info_worker::loop_request_cust_login_info()
 				request_sysinfo(handle);
 			}
 		}
-		std::unique_lock<std::mutex> lck(mutex_);
+
+		std::mutex mutex;
+		std::unique_lock<std::mutex> lck(mutex);
 		if (cv_.wait_for(lck, std::chrono::seconds(g_cfg.login_interval)) != std::cv_status::timeout)
 			return;
 		//::PostMessage()
 	}
 	//BCDeleteHandle(handle);
 }
+catch (std::exception &err)
+{
+	std::ostringstream oss;
+	oss << "客户登录信息查询线程异常退出，" << err.what() << ",请重启程序.";
+	PostOutputMsg(oss.str());
+}
+
 
 void cust_dynamic_info_worker::loop_request_cust_capital()
+try
 {
-	auto fetcher = [this](const std::string &cust_no, BCHANDLE handle, int row) {
+	std::ostringstream oss;
+	oss << "客户权益查询线程thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
+	PostOutputMsg(oss.str());
+
+	Scoped_BCHANDLE handle;
+
+	auto fetcher = [&](const std::string &cust_no, BCHANDLE handle, int row) {
 		//char sholder_ac_no[16] = { 0 };
 		//BCGetStringFieldByName(handle, 0, "sholder_ac_no", sholder_ac_no, sizeof(sholder_ac_no));
 		//assert(cust_no == sholder_ac_no);
@@ -196,7 +463,7 @@ void cust_dynamic_info_worker::loop_request_cust_capital()
 		}
 	};
 
-	Scoped_BCHANDLE handle;
+	
 	for (int i = 0;;i++)
 	{
 		if (i == 0 || sysinfo_.request_time == 0 || sysinfo_.system_status[0] == '0'|| sysinfo_.system_status[0] == '1') {
@@ -211,14 +478,28 @@ void cust_dynamic_info_worker::loop_request_cust_capital()
 			}
 		}
 
-		std::unique_lock<std::mutex> lck(mutex_);
+		std::mutex mutex;
+		std::unique_lock<std::mutex> lck(mutex);
 		if (cv_.wait_for(lck, std::chrono::seconds(g_cfg.capital_interval)) != std::cv_status::timeout)
 			return;
+		//std::this_thread::sleep_for(std::chrono::seconds(g_cfg.capital_interval));
 		
 	}
 }
-void cust_dynamic_info_worker::loop_request_cust_basic()
+catch (std::exception &err)
 {
+	std::ostringstream oss;
+	oss << "客户权益查询线程异常退出," << err.what() << ",请重启程序.";
+	PostOutputMsg(oss.str());
+}
+
+void cust_dynamic_info_worker::loop_request_cust_basic()
+try
+{
+	std::ostringstream oss;
+	oss << "客户基本资料查询线程thread_id=" << std::this_thread::get_id();
+	PostOutputMsg(oss.str());
+
 	Scoped_BCHANDLE handle;
 	for (;;)
 	{
@@ -240,6 +521,13 @@ void cust_dynamic_info_worker::loop_request_cust_basic()
 
 	}
 }
+catch (std::exception &err)
+{
+	std::ostringstream oss;
+	oss << "客户基本资料查询线程异常退出，" << err.what() << ",请重启程序.";
+	PostOutputMsg(oss.str());
+}
+
 //
 //void cust_dynamic_info_worker::loop_request_cust_position()
 //{
@@ -574,7 +862,7 @@ void cust_dynamic_info_worker::request_cust_position(BCHANDLE handle, const std:
 		BCGetIntFieldByName(handle, row, "lvol10", &p.multiple);
 
 		std::unique_lock<std::mutex> lck(mutex_);
-		this->info_[cust_no].positions.push_back(p);
+		info_[cust_no].positions.push_back(p);
 	};
 
 	BCResetHandle(handle);
@@ -655,7 +943,7 @@ void cust_dynamic_info_worker::request_cust_td_posi_detail(BCHANDLE handle, cons
 		BCGetDoubleFieldByName(handle, row, "damt7", &pd.yd_settle_price);
 
 		std::unique_lock<std::mutex> lck(mutex_);
-		this->info_[cust_no].posi_detail.push_back(pd);
+		info_[cust_no].posi_detail.push_back(pd);
 		
 	};
 
@@ -716,13 +1004,13 @@ void cust_dynamic_info_worker::request_cust_order(BCHANDLE handle, const std::st
 
 		if (o.force_close[0] != '0' && force_orderseqs_.find(o.orderseq) == force_orderseqs_.end())
 		{
-			if(theApp.m_bMsgBee)
-				MessageBeep(MB_ICONINFORMATION);
+			if (theApp.m_bMsgBee)
+				for (int i = 0; i < 5; i++) MessageBeep(MB_ICONINFORMATION);
 			force_orderseqs_.insert(o.orderseq);
 		}
 
 		std::unique_lock<std::mutex> lck(mutex_);
-		this->info_[cust_no].orders.push_back(o);
+		info_[cust_no].orders.push_back(o);
 	};
 
 	BCResetHandle(handle);
@@ -791,7 +1079,7 @@ void cust_dynamic_info_worker::request_cust_trade(BCHANDLE handle, const std::st
 		BCGetStringFieldByName(handle, row, "sstatus0", t.force_close, sizeof(t.force_close));
 
 		std::unique_lock<std::mutex> lck(mutex_);
-		this->info_[cust_no].trades.push_back(t);
+		info_[cust_no].trades.push_back(t);
 	};
 
 	BCResetHandle(handle);
@@ -825,7 +1113,7 @@ void cust_dynamic_info_worker::request_sysinfo(BCHANDLE handle)
 		BCGetStringFieldByName(handle, 0, "sdate3", sysinfo_.host_date, sizeof(sysinfo_.host_date));
 		BCGetStringFieldByName(handle, 0, "sstatus0", sysinfo_.system_status, sizeof(sysinfo_.system_status));
 		BCGetStringFieldByName(handle, 0, "stime0", sysinfo_.system_time, sizeof(sysinfo_.system_time));
-		sysinfo_.request_time = time(NULL);
+		sysinfo_.request_time = static_cast<long>(time(NULL));
 	};
 
 	BCResetHandle(handle);

@@ -106,6 +106,7 @@ void CProxyOperSettingDialog::OnBnClickedButtonAdd()
 	ob.menu_perm[23] = 8;
 	ob.menu_perm[24] = 124;
 	ob.menu_perm[27] = 2;
+	ob.menu_perm[29] = 16;
 	ob.menu_perm[31] = 64;
 	ob.menu_perm[32] = 1;
 	ob.menu_perm[33] = 160;

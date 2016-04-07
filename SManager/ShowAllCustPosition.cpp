@@ -44,7 +44,9 @@ void CShowAllCustPosition::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CShowAllCustPosition, CDialogEx)
 //	ON_WM_CONTEXTMENU()
 //	ON_NOTIFY(NM_RCLICK, IDC_LIST_ALL_CUST_POSITION, &CShowAllCustPosition::OnNMRClickListAllCustPosition)
+#ifndef  _OPER_PROXY
 	ON_WM_CONTEXTMENU()
+#endif
 	ON_COMMAND(ID_CLOSE_ALL, &CShowAllCustPosition::OnCloseAll)
 	//ON_UPDATE_COMMAND_UI(ID_CLOSE_ALL, &CShowAllCustPosition::OnUpdateUICloseAll)
 	ON_COMMAND(ID_CLOSE_SINGLE, &CShowAllCustPosition::OnCloseSingle)

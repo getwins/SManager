@@ -13,6 +13,8 @@
 #include <set>
 #include <cassert>
 
+//#include "CommBCRequest.h"
+
 std::atomic_bool g_login(false);
 
 using namespace KingstarAPI;
@@ -53,6 +55,7 @@ public:
 		strncpy(reqUserLogin.BrokerID, m_chBrokerID, sizeof(reqUserLogin.BrokerID) - 1);
 		strncpy(reqUserLogin.UserID, m_chUserID, sizeof(reqUserLogin.UserID) - 1);
 		strncpy(reqUserLogin.Password, m_chPassword, sizeof(reqUserLogin.Password) - 1);
+		//strcpy(reqUserLogin.TradingDay, "20160325");
 
 		// 发送登录请求
 		m_pUserApi->ReqUserLogin(&reqUserLogin, m_nRequestID++);
@@ -61,16 +64,21 @@ public:
 	// 断线信号
 	virtual void OnFrontDisconnected(int nReason)
 	{
-		PostOutputMsg("行情前置连接断开");
+		std::ostringstream oss;
+		oss << "行情前置连接断开,thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
+		PostOutputMsg(oss.str());
 	}
 
 	// 登录应答处理
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 	{
 		if (pRspInfo != NULL) {
-			m_pUserApi->GetTradingDay();
+			
 			std::ostringstream oss;
-			oss << "登录行情网关," << pRspInfo->ErrorID << "," << pRspInfo->ErrorMsg;
+			oss << "登录行情网关," << pRspInfo->ErrorID << "," << pRspInfo->ErrorMsg
+				<< ",行情交易日期" << m_pUserApi->GetTradingDay()
+				<< ",thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
+
 			PostOutputMsg(oss.str());
 			if (pRspInfo->ErrorID == 0) {
 				g_login = true;
@@ -106,9 +114,10 @@ public:
 	{
 		if (pRspInfo) {
 			std::ostringstream oss;
-			oss << "订阅合约行情应答," 
+			oss << "订阅合约行情应答,"
 				<< (pSpecificInstrument ? pSpecificInstrument->InstrumentID : "")
-				<< "," << pRspInfo->ErrorID << "," << pRspInfo->ErrorMsg;
+				<< "," << pRspInfo->ErrorID << "," << pRspInfo->ErrorMsg
+				<< ",thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
 			PostOutputMsg(oss.str());
 		}
 	}

@@ -14,6 +14,7 @@ typedef std::map<std::string, std::vector<commission_template_st>> StrCtMap_t;
 typedef std::map<std::string, std::vector<margin_template_st>> StrMtMap_t;
 
 typedef std::vector<cust_trade_st> TradeVec_t;
+typedef std::vector<cust_order_st> OrderVec_t;
 
 struct cust_position_id_st
 {

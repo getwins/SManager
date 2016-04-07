@@ -2,6 +2,7 @@
 #include "CommBCRequest.h"
 #include "SManager.h"
 #include <algorithm>
+#include <cassert>
 
 BCResult BCRequestInstMarketData_851503(BCHANDLE handle, std::string inst, inst_market_st &o_md)
 {
@@ -466,4 +467,291 @@ BCResult BCRequestQryOperCustCorrespond_851243(BCHANDLE handle, char *oper_code,
 	BCSetStringFieldByName(handle, 0, "sstatus0", "1");
 
 	return MyBCRequest(handle, fetcher);
+}
+
+BCResult BCRequestCustPosition_854048(BCHANDLE handle, const std::string &cust_no, PosiVec_t &o_posi)
+{
+	FetchRowFunc_t fetcher = [&](HANDLE handle, int row) {
+		cust_position_st p = { 0 };
+		//char sholder_ac_no[16] = { 0 };
+		BCGetStringFieldByName(handle, row, "sholder_ac_no", p.cust_no, sizeof(p.cust_no));
+		assert(cust_no == p.cust_no);
+
+		BCGetStringFieldByName(handle, row, "smarket_code", p.exchangeid, sizeof(p.exchangeid));
+		BCGetStringFieldByName(handle, row, "sserial2", p.seatid, sizeof(p.seatid));
+		BCGetStringFieldByName(handle, row, "sstock_code", p.product, sizeof(p.product));
+		BCGetStringFieldByName(handle, row, "sdate1", p.delivery_date, sizeof(p.delivery_date));
+		BCGetStringFieldByName(handle, row, "sbank_acc", p.instrumentid, sizeof(p.instrumentid));
+		BCGetStringFieldByName(handle, row, "sstatus2", p.direction, sizeof(p.direction));
+		BCGetStringFieldByName(handle, row, "sstatus4", p.hedge_flag, sizeof(p.hedge_flag));
+		BCGetIntFieldByName(handle, row, "lvol5", &p.positions);
+		BCGetIntFieldByName(handle, row, "lvol12", &p.td_positions);
+		BCGetDoubleFieldByName(handle, row, "damt21", &p.hold_average_price);
+		BCGetDoubleFieldByName(handle, row, "damt26", &p.open_average_price);
+		BCGetDoubleFieldByName(handle, row, "damt8", &p.float_profit);
+		BCGetDoubleFieldByName(handle, row, "damt23", &p.last_price);
+		BCGetIntFieldByName(handle, row, "lvol10", &p.multiple);
+
+
+		o_posi.push_back(p);
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854048);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", (char*)cust_no.c_str());
+	BCSetStringFieldByName(handle, 0, "sstatus3", "1"); //是否不输出登记标记
+	BCSetStringFieldByName(handle, 0, "sstatus0", "0"); //汇总标记
+	//BCSetStringFieldByName(handle, 0, "sbank_acc", ""); //合约代码
+
+	o_posi.clear();
+
+	return MyBCRequest(handle, fetcher, BCMSG_NO);
+
+	//{
+	//	std::unique_lock<std::mutex> lck(mutex_);
+	//	for (PosiVec_t::iterator it = info_[cust_no].positions.begin(); it != info_[cust_no].positions.end(); ++it)
+	//		request_position_offset_volume(handle, *it);
+	//}
+
+	//::PostMessage(
+	//	theApp.GetMainWnd()->GetSafeHwnd(),
+	//	WM_USER_CUST_DYNAMIC_INFO,
+	//	CUST_DYNAMIC_POSITION_CHANGED,
+	//	get_identifer(cust_no));
+}
+
+BCResult BCRequestPosiOffsetVolume_854058(BCHANDLE handle, cust_position_st &p)
+{
+	FetchRowFunc_t fetcher = [&p](BCHANDLE handle, int row)
+	{
+		BCGetIntFieldByName(handle, row, "lvol4", &p.can_offset_vol);
+		BCGetIntFieldByName(handle, row, "lvol7", &p.td_can_offset_vol);
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854058);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", p.cust_no);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no2", p.trade_no);
+	BCSetStringFieldByName(handle, 0, "sserial2", p.seatid);
+	BCSetStringFieldByName(handle, 0, "smarket_code", p.exchangeid);
+	BCSetStringFieldByName(handle, 0, "scust_auth", p.instrumentid);
+	BCSetStringFieldByName(handle, 0, "sstatus2", strcmp(p.direction, "0") ? "0" : "1");
+	BCSetStringFieldByName(handle, 0, "sstatus4", p.hedge_flag);
+
+	return MyBCRequest(handle, fetcher);
+}
+
+BCResult BCRequestCustPosiDetail_854186(BCHANDLE handle, const std::string &cust_no, PosiDetailVec_t &o_pd)
+{
+	FetchRowFunc_t fetcher = [&](HANDLE handle, int row) {
+		cust_td_position_detail_st pd = { 0 };
+		//char sholder_ac_no[16] = { 0 };
+		BCGetStringFieldByName(handle, row, "sholder_ac_no", pd.cust_no, sizeof(pd.cust_no));
+		assert(cust_no == pd.cust_no);
+
+		BCGetStringFieldByName(handle, row, "sdate2", pd.trade_date, sizeof(pd.trade_date));
+		BCGetStringFieldByName(handle, row, "sdate3", pd.open_date, sizeof(pd.open_date));
+		BCGetIntFieldByName(handle, row, "lvol9", &pd.trade_seq);
+		BCGetStringFieldByName(handle, row, "smarket_code", pd.exchangeid, sizeof(pd.exchangeid));
+		BCGetStringFieldByName(handle, row, "sstatus3", pd.scurrency_type, sizeof(pd.scurrency_type));
+		BCGetStringFieldByName(handle, row, "sholder_ac_no2", pd.tradeid, sizeof(pd.tradeid));
+		BCGetStringFieldByName(handle, row, "sstock_code", pd.product, sizeof(pd.product));
+		BCGetStringFieldByName(handle, row, "sdate1", pd.delivery_date, sizeof(pd.delivery_date));
+		BCGetStringFieldByName(handle, row, "scert_addr", pd.instrumentid, sizeof(pd.instrumentid));
+		BCGetStringFieldByName(handle, row, "sstatus2", pd.direction, sizeof(pd.direction));
+		BCGetStringFieldByName(handle, row, "sstatus4", pd.hedge_flag, sizeof(pd.hedge_flag));
+		BCGetIntFieldByName(handle, row, "lvol8", &pd.volume);
+		BCGetIntFieldByName(handle, row, "lvol10", &pd.multiple);
+		BCGetDoubleFieldByName(handle, row, "damt21", &pd.hold_price);
+		BCGetDoubleFieldByName(handle, row, "damt26", &pd.open_price);
+		BCGetDoubleFieldByName(handle, row, "damt1", &pd.hold_margin);
+		BCGetDoubleFieldByName(handle, row, "damt8", &pd.td_settle_price);
+		BCGetDoubleFieldByName(handle, row, "damt7", &pd.yd_settle_price);
+
+		o_pd.push_back(pd);
+
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854186);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", (char*)cust_no.c_str());
+
+	o_pd.clear();
+
+	return MyBCRequest(handle, fetcher, BCMSG_NO);
+
+}
+
+BCResult BCRequestCustOrder_854094(BCHANDLE handle, const std::string &cust_no, OrderVec_t &o_odr)
+{
+
+	FetchRowFunc_t fetcher = [&](HANDLE handle, int row) {
+		cust_order_st o = { 0 };
+		BCGetStringFieldByName(handle, row, "sholder_ac_no", o.cust_no, sizeof(o.cust_no));
+		assert(cust_no == o.cust_no);
+
+		BCGetIntFieldByName(handle, row, "lserial0", &o.orderseq);
+		BCGetStringFieldByName(handle, row, "scust_no", o.oper_no, sizeof(o.oper_no));
+		BCGetStringFieldByName(handle, row, "smarket_code", o.exchangeid, sizeof(o.exchangeid));
+		BCGetStringFieldByName(handle, row, "sstock_code", o.productid, sizeof(o.productid));
+		BCGetStringFieldByName(handle, row, "sdate1", o.delivery_date, sizeof(o.delivery_date));
+		BCGetStringFieldByName(handle, row, "sphone", o.instrumentid, sizeof(o.instrumentid));
+		BCGetStringFieldByName(handle, row, "sstatus0", o.order_status, sizeof(o.order_status));
+		BCGetStringFieldByName(handle, row, "sstatus3", o.offset_flag, sizeof(o.offset_flag));
+		BCGetStringFieldByName(handle, row, "sstatus2", o.direction, sizeof(o.direction));
+		BCGetStringFieldByName(handle, row, "sstatus4", o.hedge_flag, sizeof(o.hedge_flag));
+		BCGetDoubleFieldByName(handle, row, "damt0", &o.order_price);
+		BCGetIntFieldByName(handle, row, "lvol0", &o.origin_total_volume);
+		BCGetIntFieldByName(handle, row, "lvol2", &o.total_volume);
+		BCGetDoubleFieldByName(handle, row, "damt2", &o.traded_price);
+		BCGetIntFieldByName(handle, row, "lvol1", &o.traded_volume);
+		BCGetStringFieldByName(handle, row, "sorder0", o.sysid, sizeof(o.sysid));
+		BCGetStringFieldByName(handle, row, "stime0", o.order_time, sizeof(o.order_time));
+		BCGetStringFieldByName(handle, row, "stime1", o.insert_time, sizeof(o.insert_time));
+		BCGetStringFieldByName(handle, row, "sholder_ac_no2", o.trade_no, sizeof(o.trade_no));
+		BCGetStringFieldByName(handle, row, "sholder_type", o.order_way, sizeof(o.order_way));
+		BCGetStringFieldByName(handle, row, "scust_no2", o.cancel_cust, sizeof(o.cancel_cust));
+		BCGetStringFieldByName(handle, row, "stime2", o.cancel_time, sizeof(o.cancel_time));
+		BCGetStringFieldByName(handle, row, "sstat_type2", o.order_type, sizeof(o.order_type));
+		BCGetStringFieldByName(handle, row, "sserial2", o.seatid, sizeof(o.seatid));
+		BCGetStringFieldByName(handle, row, "scurrency_type", o.currency, sizeof(o.currency));
+		BCGetStringFieldByName(handle, row, "sstatus1", o.force_close, sizeof(o.force_close));
+
+		o_odr.push_back(o);
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854094);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", (char*)cust_no.c_str());
+	BCSetStringFieldByName(handle, 0, "smain_flag", "1");//所有委托单标记
+	BCSetStringFieldByName(handle, 0, "sstatus3", "1");//是否不输出合计标记
+
+	o_odr.clear();
+
+	return MyBCRequest(handle, fetcher, BCMSG_NO);
+}
+
+BCResult BCRequestCustTrade_854095(BCHANDLE handle, const std::string &cust_no, TradeVec_t &o_trades)
+{
+
+	FetchRowFunc_t fetcher = [&](HANDLE handle, int row) {
+		cust_trade_st t = { 0 };
+
+		BCGetStringFieldByName(handle, row, "sholder_ac_no", t.cust_no, sizeof(t.cust_no));
+		assert(cust_no == t.cust_no);
+
+		BCGetIntFieldByName(handle, row, "lserial0", &t.orderseq);
+		//BCGetStringFieldByName(handle, row, "scust_no", o.oper_no, sizeof(o.oper_no));
+		BCGetStringFieldByName(handle, row, "smarket_code", t.exchangeid, sizeof(t.exchangeid));
+		BCGetStringFieldByName(handle, row, "sstock_code", t.productid, sizeof(t.productid));
+		BCGetStringFieldByName(handle, row, "sdate1", t.delivery_date, sizeof(t.delivery_date));
+		BCGetStringFieldByName(handle, row, "sbank_acc", t.instrumentid, sizeof(t.instrumentid));
+		//BCGetStringFieldByName(handle, row, "sstatus0", t.order_status, sizeof(t.order_status));
+		BCGetStringFieldByName(handle, row, "sstatus3", t.offset_flag, sizeof(t.offset_flag));
+		BCGetStringFieldByName(handle, row, "sstatus2", t.direction, sizeof(t.direction));
+		BCGetStringFieldByName(handle, row, "sstatus4", t.hedge_flag, sizeof(t.hedge_flag));
+		BCGetDoubleFieldByName(handle, row, "damt2", &t.price);
+		BCGetIntFieldByName(handle, row, "lvol1", &t.volume);
+		BCGetStringFieldByName(handle, row, "sorder0", t.sysid, sizeof(t.sysid));
+		BCGetIntFieldByName(handle, row, "lvol11", &t.tradeseq);
+		BCGetStringFieldByName(handle, row, "sserial2", t.seatid, sizeof(t.seatid));
+		BCGetStringFieldByName(handle, row, "scurrency_type", t.currency, sizeof(t.currency));
+		BCGetStringFieldByName(handle, row, "stime3", t.time, sizeof(t.time));
+		BCGetDoubleFieldByName(handle, row, "damt6", &t.commission);
+		BCGetStringFieldByName(handle, row, "scust_no", t.oper_no, sizeof(t.oper_no));
+		BCGetStringFieldByName(handle, row, "sstatus0", t.force_close, sizeof(t.force_close));
+
+		o_trades.push_back(t);
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854095);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", (char*)cust_no.c_str());
+	BCSetStringFieldByName(handle, 0, "sstatus1", "0");//合并标志
+	BCSetStringFieldByName(handle, 0, "smain_flag", "1");//所有委托单标记
+	BCSetStringFieldByName(handle, 0, "sstatus3", "1");//是否不输出合计标记
+	BCSetStringFieldByName(handle, 0, "sstatus0", "0");//汇总标记
+
+	o_trades.clear();
+
+	return MyBCRequest(handle, fetcher, BCMSG_NO);
+}
+
+BCResult BCRequestSysInfo_100319(BCHANDLE handle, system_info_st &o_sysinfo)
+{
+	FetchRowFunc_t fetcher = [&](BCHANDLE handle, int row) {
+		BCGetStringFieldByName(handle, 0, "sdate0", o_sysinfo.system_date, sizeof(o_sysinfo.system_time));
+		BCGetStringFieldByName(handle, 0, "sdate2", o_sysinfo.check_date, sizeof(o_sysinfo.check_date));
+		BCGetStringFieldByName(handle, 0, "sdate1", o_sysinfo.next_tradingday, sizeof(o_sysinfo.next_tradingday));
+		BCGetStringFieldByName(handle, 0, "sdate3", o_sysinfo.host_date, sizeof(o_sysinfo.host_date));
+		BCGetStringFieldByName(handle, 0, "sstatus0", o_sysinfo.system_status, sizeof(o_sysinfo.system_status));
+		BCGetStringFieldByName(handle, 0, "stime0", o_sysinfo.system_time, sizeof(o_sysinfo.system_time));
+		o_sysinfo.request_time = time(NULL);
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 100319);
+	BCSetStringFieldByName(handle, 0, "sbranch_code0", "000");
+	return MyBCRequest(handle, fetcher, BCMSG_NO);
+}
+
+BCResult BCRequestCustCapital_854196(BCHANDLE handle, const std::string &cust_no, cust_capital_st &o_capital)
+{
+	FetchRowFunc_t fetcher = [&](BCHANDLE handle, int row) {
+		BCGetStringFieldByName(handle, 0, "sholder_ac_no", o_capital.cust_no, sizeof(o_capital.cust_no));
+		assert(cust_no == o_capital.cust_no);
+		BCGetStringFieldByName(handle, 0, "scurrency_type", o_capital.scurrency_type, sizeof(o_capital.scurrency_type));
+		BCGetDoubleFieldByName(handle, 0, "damt3", &o_capital.yd_balance);
+		BCGetDoubleFieldByName(handle, 0, "damt4", &o_capital.td_money_in);
+		BCGetDoubleFieldByName(handle, 0, "damt5", &o_capital.td_money_out);
+		BCGetDoubleFieldByName(handle, 0, "damt26", &o_capital.available);
+		BCGetDoubleFieldByName(handle, 0, "damt23", &o_capital.margin);
+		BCGetDoubleFieldByName(handle, 0, "damt29", &o_capital.buy_frzn_margin);
+		BCGetDoubleFieldByName(handle, 0, "damt30", &o_capital.sell_frzn_margin);
+		BCGetDoubleFieldByName(handle, 0, "damt6", &o_capital.commission);
+		BCGetDoubleFieldByName(handle, 0, "damt33", &o_capital.frzn_commission);
+		BCGetDoubleFieldByName(handle, 0, "damt11", &o_capital.offset_profit);
+		BCGetDoubleFieldByName(handle, 0, "damt8", &o_capital.float_profit);
+		BCGetDoubleFieldByName(handle, 0, "damt28", &o_capital.dynamic_capital);
+		BCGetDoubleFieldByName(handle, 0, "damt25", &o_capital.frzn_moeny);
+		BCGetStringFieldByName(handle, 0, "sstatus3", o_capital.risk_level, sizeof(o_capital.risk_level));
+		BCGetDoubleFieldByName(handle, 0, "damt22", &o_capital.risk_degree);
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854196);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", (char*)cust_no.c_str());
+	//BCSetStringFieldByName(handle, 0, "scurrency_type", ""); //
+	return MyBCRequest(handle, fetcher, BCMSG_NO);
+}
+
+BCResult BCRequestCustLoginInfo_854093(BCHANDLE handle, const std::string &cust_no, cust_login_info_st &o_cli)
+{
+	FetchRowFunc_t fetcher = [&](BCHANDLE handle, int row) {
+		char sholder_ac_no[16] = { 0 };
+		BCGetStringFieldByName(handle, 0, "sholder_ac_no", sholder_ac_no, sizeof(sholder_ac_no));
+		if (cust_no != sholder_ac_no)
+			return;
+		BCGetStringFieldByName(handle, 0, "sstatus0", o_cli.login_status, sizeof(o_cli.login_status));
+		BCGetStringFieldByName(handle, 0, "sholder_type", o_cli.cur_app_name, sizeof(o_cli.cur_app_name));
+		BCGetStringFieldByName(handle, 0, "sphone2", o_cli.cur_login_mac, sizeof(o_cli.cur_login_mac));
+		BCGetStringFieldByName(handle, 0, "sphone3", o_cli.cur_login_ip, sizeof(o_cli.cur_login_ip));
+		BCGetStringFieldByName(handle, 0, "stime2", o_cli.cur_login_time, sizeof(o_cli.cur_login_time));
+		BCGetStringFieldByName(handle, 0, "sdate2", o_cli.cur_login_date, sizeof(o_cli.cur_login_date));
+		if (o_cli.login_status[0] != '1')
+			o_cli.login_status[0] = '0';
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854093);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", (char*)cust_no.c_str());
+
+	return MyBCRequest(handle, fetcher, BCMSG_NO);
 }

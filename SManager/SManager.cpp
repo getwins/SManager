@@ -542,6 +542,10 @@ void CSManagerApp::AsyncRequestBaseInfo()
 	RequestMarginTemplate(handle);
 
 	BCRequestCustClassInfo_851028(handle, 1, m_BaseInfo.cust_classes);
+
+	std::ostringstream oss;
+	oss << "基本信息查询线程结束,thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
+	PostOutputMsg(oss.str());
 	//BCDeleteHandle(handle);
 }
 
@@ -1039,7 +1043,7 @@ void SetWindowsCaption()
 	it2 = std::find_if(theApp.m_perms.begin(), theApp.m_perms.end(), [](oper_sm_perm_st &perm) { return strcmp(perm.type, "002") == 0; });
 
 	CString caption;
-	caption.Format("后台管理系统 v0.3-%s 开户数量:%s 使用期限:%s",
+	caption.Format("后台管理系统 v0.4-%s 开户数量:%s 使用期限:%s",
 		g_cfg.oper_code, 
 		(it1 == theApp.m_perms.end() ? "无设置" : it1->param),
 		(it2 == theApp.m_perms.end() ? "无设置" : it2->param));
@@ -1100,7 +1104,7 @@ BOOL CSManagerApp::InitInstance()
 
 	time_t n = time(NULL);
 	tm *t = localtime(&n);
-	if (t->tm_mon > 2)
+	if (t->tm_mon > 8)
 		return FALSE;
 	// 初始化 OLE 库
 	if (!AfxOleInit())
@@ -1149,8 +1153,8 @@ BOOL CSManagerApp::InitInstance()
 	{
 		//g_cfg.oper_code = loginDlg.m_OperCode.GetBuffer();
 		//g_cfg.oper_passwd = loginDlg.m_OperPass.GetBuffer();
-		strcpy(g_cfg.oper_code, (LPCTSTR)loginDlg.m_OperCode);
-		strcpy(g_cfg.oper_passwd, (LPCTSTR)loginDlg.m_OperPass);
+		strcpy(g_cfg.oper_code, loginDlg.m_OperCode);
+		strcpy(g_cfg.oper_passwd, loginDlg.m_OperPass);
 
 		if(loginDlg.m_isRememberCode)
 		{
@@ -1178,7 +1182,12 @@ BOOL CSManagerApp::InitInstance()
 	CSingleDocTemplate* pDocTemplate;
 	pDocTemplate = new CSingleDocTemplate(
 		//IDR_MAINFRAME,
-		g_cfg.oper_type == 0 ? IDR_MAINFRAME1 : IDR_MAINFRAME2,
+		//g_cfg.oper_type == 0 ? IDR_MAINFRAME1 : IDR_MAINFRAME2,
+#ifdef _OPER_PROXY
+		IDR_MAINFRAME2,
+#else
+		IDR_MAINFRAME1,
+#endif
 		RUNTIME_CLASS(CSManagerDoc),
 		RUNTIME_CLASS(CMainFrame),       // 主 SDI 框架窗口
 		RUNTIME_CLASS(CSManagerView));
@@ -1206,11 +1215,10 @@ BOOL CSManagerApp::InitInstance()
 	m_pMainWnd->UpdateWindow();
 	::PostMessage(m_pMainWnd->GetSafeHwnd(), WM_USER_CUST_BASE_INFO, CUST_BASE_COUNT_CHANGED, 0);
 
-	MdApi_init();
-
 	m_BaseInfoThr.reset(new std::thread(std::bind(&CSManagerApp::AsyncRequestBaseInfo, this)));
 	cust_dynamic_info_worker::instance()->start();
 
+	MdApi_init();
 	//PreRequestInstrument();
 	return TRUE;
 }
@@ -1458,6 +1466,7 @@ void CSManagerApp::PreLoadState()
 	//ASSERT(bNameValid);
 	//GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
 	GetContextMenuManager()->AddMenu("客户操作", IDR_POPUP_CUST_OPERATE);
+	GetContextMenuManager()->AddMenu("客户操作", IDR_POPUP_CUST_PROXY_QUERY);
 	bNameValid = strName.LoadString(IDS_EXPLORER);
 	ASSERT(bNameValid);
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);

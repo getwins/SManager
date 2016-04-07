@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SManager", "SManager\SManager.vcxproj", "{3CA8379E-E126-43EA-9483-42136BF00DD4}"
 EndProject
@@ -13,6 +13,10 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Proxy_Debug|x64 = Proxy_Debug|x64
+		Proxy_Debug|x86 = Proxy_Debug|x86
+		Proxy_Release|x64 = Proxy_Release|x64
+		Proxy_Release|x86 = Proxy_Release|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -21,6 +25,15 @@ Global
 		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Debug|x64.Build.0 = Debug|x64
 		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Debug|x86.ActiveCfg = Debug|Win32
 		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Debug|x86.Build.0 = Debug|Win32
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Debug|x86.Deploy.0 = Debug|Win32
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Proxy_Debug|x64.ActiveCfg = Proxy_Debug|x64
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Proxy_Debug|x64.Build.0 = Proxy_Debug|x64
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Proxy_Debug|x86.ActiveCfg = Proxy_Debug|Win32
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Proxy_Debug|x86.Build.0 = Proxy_Debug|Win32
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Proxy_Release|x64.ActiveCfg = Proxy_Release|x64
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Proxy_Release|x64.Build.0 = Proxy_Release|x64
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Proxy_Release|x86.ActiveCfg = Proxy_Release|Win32
+		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Proxy_Release|x86.Build.0 = Proxy_Release|Win32
 		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Release|x64.ActiveCfg = Release|x64
 		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Release|x64.Build.0 = Release|x64
 		{3CA8379E-E126-43EA-9483-42136BF00DD4}.Release|x86.ActiveCfg = Release|Win32
@@ -29,6 +42,14 @@ Global
 		{A4626F26-07D9-473D-9512-92E37CC4A435}.Debug|x64.Build.0 = Debug|x64
 		{A4626F26-07D9-473D-9512-92E37CC4A435}.Debug|x86.ActiveCfg = Debug|Win32
 		{A4626F26-07D9-473D-9512-92E37CC4A435}.Debug|x86.Build.0 = Debug|Win32
+		{A4626F26-07D9-473D-9512-92E37CC4A435}.Proxy_Debug|x64.ActiveCfg = Debug|x64
+		{A4626F26-07D9-473D-9512-92E37CC4A435}.Proxy_Debug|x64.Build.0 = Debug|x64
+		{A4626F26-07D9-473D-9512-92E37CC4A435}.Proxy_Debug|x86.ActiveCfg = Debug|Win32
+		{A4626F26-07D9-473D-9512-92E37CC4A435}.Proxy_Debug|x86.Build.0 = Debug|Win32
+		{A4626F26-07D9-473D-9512-92E37CC4A435}.Proxy_Release|x64.ActiveCfg = Release|x64
+		{A4626F26-07D9-473D-9512-92E37CC4A435}.Proxy_Release|x64.Build.0 = Release|x64
+		{A4626F26-07D9-473D-9512-92E37CC4A435}.Proxy_Release|x86.ActiveCfg = Release|Win32
+		{A4626F26-07D9-473D-9512-92E37CC4A435}.Proxy_Release|x86.Build.0 = Release|Win32
 		{A4626F26-07D9-473D-9512-92E37CC4A435}.Release|x64.ActiveCfg = Release|x64
 		{A4626F26-07D9-473D-9512-92E37CC4A435}.Release|x64.Build.0 = Release|x64
 		{A4626F26-07D9-473D-9512-92E37CC4A435}.Release|x86.ActiveCfg = Release|Win32
@@ -37,6 +58,14 @@ Global
 		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Debug|x64.Build.0 = Debug|x64
 		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Debug|x86.ActiveCfg = Debug|Win32
 		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Debug|x86.Build.0 = Debug|Win32
+		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Proxy_Debug|x64.ActiveCfg = Debug|x64
+		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Proxy_Debug|x64.Build.0 = Debug|x64
+		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Proxy_Debug|x86.ActiveCfg = Release|Win32
+		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Proxy_Debug|x86.Build.0 = Release|Win32
+		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Proxy_Release|x64.ActiveCfg = Release|x64
+		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Proxy_Release|x64.Build.0 = Release|x64
+		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Proxy_Release|x86.ActiveCfg = Release|Win32
+		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Proxy_Release|x86.Build.0 = Release|Win32
 		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Release|x64.ActiveCfg = Release|x64
 		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Release|x64.Build.0 = Release|x64
 		{65E7D0D9-5AE4-426A-B0EF-41DB7E494F87}.Release|x86.ActiveCfg = Release|Win32

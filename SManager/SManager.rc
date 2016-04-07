@@ -72,17 +72,30 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\idr_main.ico"
+IDR_MAINFRAME           ICON                    "res\\SManager.ico"
+
 IDR_SManagerTYPE        ICON                    "res\\SManagerDoc.ico"
+
 IDI_FILE_VIEW           ICON                    "res\\file_view.ico"
+
 IDI_FILE_VIEW_HC        ICON                    "res\\file_view_hc.ico"
+
 IDI_CLASS_VIEW          ICON                    "res\\class_view.ico"
+
 IDI_CLASS_VIEW_HC       ICON                    "res\\class_view_hc.ico"
+
 IDI_OUTPUT_WND          ICON                    "res\\output_wnd.ico"
+
 IDI_OUTPUT_WND_HC       ICON                    "res\\output_wnd_hc.ico"
+
 IDI_PROPERTIES_WND      ICON                    "res\\properties_wnd.ico"
+
 IDI_PROPERTIES_WND_HC   ICON                    "res\\properties_wnd_hc.ico"
-IDR_MAINFRAME1          ICON                    "C:\\Users\\think\\Documents\\Visual Studio 2015\\Projects\\SManager\\SManager\\res\\u4 (2).ico"
+
+IDR_MAINFRAME1          ICON                    "res\\mainframe1.ico"
+
+IDR_MAINFRAME2          ICON                    "res\\mainframe2.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -90,23 +103,41 @@ IDR_MAINFRAME1          ICON                    "C:\\Users\\think\\Documents\\Vi
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
 IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+
 IDR_SORT                BITMAP                  "res\\sort.bmp"
+
 IDB_SORT_24             BITMAP                  "res\\sort_hc.bmp"
+
 IDB_FILE_VIEW           BITMAP                  "res\\fileview.bmp"
+
 IDB_FILE_VIEW_24        BITMAP                  "res\\fileview_hc.bmp"
+
 IDB_CLASS_VIEW          BITMAP                  "res\\classview.bmp"
+
 IDB_CLASS_VIEW_24       BITMAP                  "res\\classview_hc.bmp"
+
 IDR_EXPLORER            BITMAP                  "res\\explorer.bmp"
+
 IDB_EXPLORER_24         BITMAP                  "res\\explorer_hc.bmp"
+
 IDR_MENU_IMAGES         BITMAP                  "res\\menuimages.bmp"
+
 IDB_MENU_IMAGES_24      BITMAP                  "res\\menuimages_hc.bmp"
+
 IDR_PROPERTIES          BITMAP                  "res\\properties.bmp"
+
 IDB_PROPERTIES_HC       BITMAP                  "res\\properties_hc.bmp"
+
 IDR_TOOLBAR_POSITION    BITMAP                  "res\\toolbar1.bmp"
+
 IDR_TOOLBAR_ORDER       BITMAP                  "res\\bmp00001.bmp"
+
 IDR_TOOLBAR_TRADE       BITMAP                  "res\\bmp00002.bmp"
+
 IDR_TOOLBAR_CAPITAL_SUMMARY BITMAP                  "res\\bmp00003.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -450,31 +481,6 @@ BEGIN
     MENUITEM "",                            65535
 END
 
-IDR_POPUP_CUST_OPERATE MENU
-BEGIN
-    POPUP "客户操作"
-    BEGIN
-        MENUITEM "出入金",                         ID_MONEY_IN_OUT
-        MENUITEM "客户状态设置",                      ID_CUST_STATUS_MAINTAIN
-        MENUITEM "客户绑定模板设置",                    ID_CUST_TEMPLATE_SETTING
-        MENUITEM "客户手续费率设置",                    ID_CUST_COMMISSION_RATE_SETTING
-        MENUITEM "客户保证金率设置",                    ID_CUST_MARGIN_RATE_SETTING
-        POPUP "历史记录查询"
-        BEGIN
-            MENUITEM "历史委托查询",                      ID_ORDER_QUERY
-            MENUITEM "历史成交查询",                      ID_TRADE_QUERY
-            MENUITEM "历史持仓查询",                      ID_POSITION_QUERY
-            MENUITEM "出入金查询",                       ID_QUERY_MONEY_IN_OUT
-            MENUITEM "结算单查询",                       ID_SETTLEMENT_QUERY
-        END
-        MENUITEM "重置交易密码",                      ID_RESET_TRADE_PASSWD
-        MENUITEM "重置资金密码",                      ID_RESET_FUND_PASSWD
-        MENUITEM "客户销户",                        ID_CANCEL_CUST
-        MENUITEM "客户风控规则设置",                    ID_CUST_RISK_CONTROL_SETTING
-        MENUITEM "显示所有客户持仓",                    ID_SHOW_ALL_CUST_POSITION
-    END
-END
-
 IDR_POPUP_CLOSE_POSITION MENU
 BEGIN
     POPUP "平仓选项"
@@ -489,7 +495,6 @@ BEGIN
     POPUP "系统"
     BEGIN
         MENUITEM "系统信息",                        ID_SYSTEM_INFO
-        MENUITEM "代理操作员设置",                     ID_PROXY_OPER_SETTING
         MENUITEM "提示音",                         ID_MESSAGEBEE
         MENUITEM "修改操作员密码",                     ID_MODIFY_PASSWD
         MENUITEM "清除缓存文件",                      ID_CLEAR_CACHE
@@ -534,8 +539,50 @@ BEGIN
         MENUITEM "历史成交查询",                      ID_TRADE_QUERY
         MENUITEM "结算单",                         ID_SETTLEMENT_QUERY
         MENUITEM "出入金查询",                       ID_QUERY_MONEY_IN_OUT
+        MENUITEM "显示所有客户持仓",                    ID_SHOW_ALL_CUST_POSITION
     END
     MENUITEM "帮助",                          ID_32890
+END
+
+IDR_POPUP_CUST_OPERATE MENU
+BEGIN
+    POPUP "客户操作"
+    BEGIN
+        MENUITEM "出入金",                         ID_MONEY_IN_OUT
+        MENUITEM "客户状态设置",                      ID_CUST_STATUS_MAINTAIN
+        MENUITEM "客户绑定模板设置",                    ID_CUST_TEMPLATE_SETTING
+        MENUITEM "客户手续费率设置",                    ID_CUST_COMMISSION_RATE_SETTING
+        MENUITEM "客户保证金率设置",                    ID_CUST_MARGIN_RATE_SETTING
+        POPUP "历史记录查询"
+        BEGIN
+            MENUITEM "历史委托查询",                      ID_ORDER_QUERY
+            MENUITEM "历史成交查询",                      ID_TRADE_QUERY
+            MENUITEM "历史持仓查询",                      ID_POSITION_QUERY
+            MENUITEM "出入金查询",                       ID_QUERY_MONEY_IN_OUT
+            MENUITEM "结算单查询",                       ID_SETTLEMENT_QUERY
+        END
+        MENUITEM "重置交易密码",                      ID_RESET_TRADE_PASSWD
+        MENUITEM "重置资金密码",                      ID_RESET_FUND_PASSWD
+        MENUITEM "客户销户",                        ID_CANCEL_CUST
+        MENUITEM "客户风控规则设置",                    ID_CUST_RISK_CONTROL_SETTING
+        MENUITEM "显示所有客户持仓",                    ID_SHOW_ALL_CUST_POSITION
+    END
+END
+
+IDR_POPUP_CUST_PROXY_QUERY MENU
+BEGIN
+    POPUP "客户操作"
+    BEGIN
+        POPUP "历史记录查询"
+        BEGIN
+            MENUITEM "历史委托查询",                      ID_ORDER_QUERY
+            MENUITEM "历史成交查询",                      ID_TRADE_QUERY
+            MENUITEM "历史持仓查询",                      ID_POSITION_QUERY
+            MENUITEM "出入金查询",                       ID_QUERY_MONEY_IN_OUT
+            MENUITEM "结算单查询",                       ID_SETTLEMENT_QUERY
+        END
+        MENUITEM "显示所有客户持仓",                    ID_SHOW_ALL_CUST_POSITION
+    END
 END
 
 
@@ -1039,6 +1086,7 @@ BEGIN
     EDITTEXT        IDC_EDIT_BYAMOUNT,61,124,53,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_BYVOLUME,136,124,53,14,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO_CUST,40,14,64,105,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "日期格式：mmdd",IDC_STATIC,217,31,63,8,WS_DISABLED
 END
 
 IDD_CUST_MARGIN_RATE_SETTING DIALOGEX 0, 0, 219, 181
@@ -1106,8 +1154,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,3,0,1
- PRODUCTVERSION 0,3,0,0
+ FILEVERSION 0,5,0,1
+ PRODUCTVERSION 0,5,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1124,12 +1172,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "TODO: getwin"
             VALUE "FileDescription", "SManager"
-            VALUE "FileVersion", "0.3.0.1"
+            VALUE "FileVersion", "0.5.0.1"
             VALUE "InternalName", "SManager.exe"
             VALUE "LegalCopyright", "TODO:  (C) getwin。  保留所有权利。"
             VALUE "OriginalFilename", "SManager.exe"
             VALUE "ProductName", "TODO: SManager"
-            VALUE "ProductVersion", "0.3.0.0"
+            VALUE "ProductVersion", "0.5.0.0"
         END
     END
     BLOCK "VarFileInfo"

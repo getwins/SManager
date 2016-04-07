@@ -1,5 +1,6 @@
 #pragma once
-#include "struct.h"
+
+#include "struct_helper.h"
 #include "MyBCRequest.h"
 #include <string>
 
@@ -27,3 +28,15 @@ BCResult BCRequestSetOperator_851200(BCHANDLE handle, char *flag, oper_basic_st 
 BCResult BCRequestQryOperator_851201(BCHANDLE handle, char *oper_code, oper_basic_st &o_oper_basic);
 BCResult BCRequestSetOperCustCorrespond_851206(BCHANDLE handle, char *flag, char *oper_code, char *cust_no);
 BCResult BCRequestQryOperCustCorrespond_851243(BCHANDLE handle, char *oper_code, std::vector<oper_cust_correspond_st> &o_occs);
+
+BCResult BCRequestCustPosition_854048(BCHANDLE handle, const std::string &cust_no, PosiVec_t &o_posi);
+BCResult BCRequestPosiOffsetVolume_854058(BCHANDLE handle, cust_position_st &p);
+
+BCResult BCRequestCustPosiDetail_854186(BCHANDLE handle, const std::string &cust_no, PosiDetailVec_t &o_pd);
+BCResult BCRequestCustOrder_854094(BCHANDLE handle, const std::string &cust_no, OrderVec_t &o_odr);
+BCResult BCRequestCustTrade_854095(BCHANDLE handle, const std::string &cust_no, TradeVec_t &o_trades);
+
+BCResult BCRequestSysInfo_100319(BCHANDLE handle, system_info_st &o_sysinfo);
+BCResult BCRequestCustCapital_854196(BCHANDLE handle, const std::string &cust_no, cust_capital_st &o_capital);
+
+BCResult BCRequestCustLoginInfo_854093(BCHANDLE handle, const std::string &cust_no, cust_login_info_st &o_cli);

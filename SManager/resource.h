@@ -126,7 +126,6 @@
 #define IDD_SHOW_ALL_CUST_POSOTION      357
 #define IDD_ADD_TEMPLATE                359
 #define IDD_COMMISSION_SETTING          361
-#define IDR_POPUP_CUST_OPERATE          363
 #define IDD_RESET_TRADE_PASSWD          364
 #define IDD_RESET_FUND_PASSWD           365
 #define IDD_CUST_TEMPLATE_SETTING       368
@@ -134,13 +133,15 @@
 #define IDD_CUST_RISK_CONTROL_SETTING   374
 #define IDR_POPUP_CLOSE_POSITION        376
 #define IDR_TOOLBAR_CAPITAL_SUMMARY     377
-#define IDR_MAINFRAME2                  377
-#define IDI_ICON1                       380
+#define IDR_MAINFRAME2                  378
+#define IDR_POPUP_CUST_OPERATE          379
 #define IDD_CUST_COMMISSION             381
 #define IDD_CUST_COMMISSION_RATE_SETTING 382
 #define IDD_CUST_MARGIN_RATE_SETTING    383
 #define IDD_CUST_MARGIN                 384
 #define IDD_PROXY_OPER_SETTING          388
+#define IDI_ICON2                       390
+#define IDR_POPUP_CUST_PROXY_QUERY      391
 #define IDC_LIST_POSITION               1000
 #define IDC_RADIO_POSITION              1001
 #define IDC_RADIO_POSITION_DETAIL       1002
@@ -318,8 +319,6 @@
 #define ID_CUST_STATUS_MAINTAIN         32865
 #define ID_MONEY_IN_OUT                 32866
 #define IDC_LIST_CUST                   32867
-#define ID_32867                        32867
-#define IDC_BUTTON_ORDER                32868
 #define ID_CLEAR_CACHE                  32868
 #define IDC_PROPERTYGRID_ORDER          32869
 #define ID_ORDER_QUERY                  32869
@@ -329,18 +328,7 @@
 #define ID_QUERY_MONEY_IN_OUT           32872
 #define ID_SETTLEMENT_QUERY             32873
 #define ID_SHOW_ALL_CUST_POSITION       32874
-#define ID_32875                        32875
-#define ID_32876                        32876
-#define ID_32877                        32877
-#define ID_32878                        32878
-#define ID_32879                        32879
-#define ID_32880                        32880
-#define ID_32881                        32881
-#define ID_32882                        32882
-#define ID_32883                        32883
-#define ID_32884                        32884
-#define ID_32885                        32885
-#define ID_F                            32886
+#define IDC_BUTTON_ORDER                32875
 #define ID_FROZEN_CUST                  32887
 #define ID_RESET_TRADE_PASSWD           32888
 #define ID_RESET_FUND_PASSWD            32889
@@ -376,13 +364,14 @@
 #define ID_32925                        32925
 #define ID_Menu32926                    32926
 #define ID_PROXY_OPER_SETTING           32927
+#define ID_32928                        32928
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        390
-#define _APS_NEXT_COMMAND_VALUE         32928
+#define _APS_NEXT_RESOURCE_VALUE        393
+#define _APS_NEXT_COMMAND_VALUE         32930
 #define _APS_NEXT_CONTROL_VALUE         1110
 #define _APS_NEXT_SYMED_VALUE           320
 #endif

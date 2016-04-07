@@ -56,10 +56,12 @@ BEGIN_MESSAGE_MAP(COrderView, CDockablePane)
 	ON_COMMAND(ID_OS_MENU, OnClickComboBox)
 	ON_CBN_SELCHANGE(ID_OS_MENU, OnComboBoxSelChangeClick)
 	ON_MESSAGE(WM_USER_CUST_SEL_CHANGED, &COrderView::OnUserCustSelChanged)
+#ifndef  _OPER_PROXY
 	ON_COMMAND(ID_CANCEL_ORDER, &COrderView::OnCancelOrder)
 	ON_UPDATE_COMMAND_UI(ID_CANCEL_ORDER, &COrderView::OnCancelOrderUpdateUI)
 	ON_COMMAND(ID_CANCEL_ALL_ORDER, &COrderView::OnCancelAllOrder)
 	ON_UPDATE_COMMAND_UI(ID_CANCEL_ALL_ORDER, &COrderView::OnCancelAllOrderUpdateUI)
+#endif
 	ON_MESSAGE(WM_USER_CUST_DYNAMIC_INFO, &COrderView::OnUserCustDynamicInfo)
 END_MESSAGE_MAP()
 

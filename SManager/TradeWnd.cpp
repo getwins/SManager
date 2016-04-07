@@ -35,8 +35,10 @@ BEGIN_MESSAGE_MAP(CTradeWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_MESSAGE(WM_USER_CUST_SEL_CHANGED, &CTradeWnd::OnUserCustSelChanged)
 	//ON_BN_CLICKED(IDC_BUTTON_ORDER, &CTradeWnd::OnBnClickedButtonOrder)
+#ifndef  _OPER_PROXY
 	ON_COMMAND(IDC_BUTTON_ORDER, &CTradeWnd::OnBnClickedButtonOrder)
 	ON_UPDATE_COMMAND_UI(IDC_BUTTON_ORDER, &OnUpdateButtonUI)
+#endif
 	//ON_MESSAGE(WM_USER_REQUEST_INST_DONE, &CTradeWnd::OnUserRequestInstDone)
 	//ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, &CTradeWnd::OnPropertyChanged)
 END_MESSAGE_MAP()
