@@ -87,6 +87,7 @@ struct user_config
 	char market_front[80];
 
 	int wnd_float;
+	int logklg;
 };
 
 extern user_config g_cfg;

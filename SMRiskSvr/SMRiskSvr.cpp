@@ -52,6 +52,8 @@ void BCCLT_init()
 	if (handle == NULL)
 		throw std::runtime_error("BCNewHandle failed");
 	BCDeleteHandle(handle);
+
+	BCSetDebugSwitch(true);
 }
 
 
@@ -168,7 +170,7 @@ void market_calc_capital()
 				int vol = force_cust_positions(handle, it->cps);
 				if (vol > 0)
 				{
-					SAFE_COUT_BEGINE << dmd.InstrumentID << "最新价" << dmd.LastPrice << "计算客户浮动盈亏" << it->cc.float_profit << ","
+					SAFE_COUT_BEGINE << dmd.InstrumentID << "最新价" << dmd.LastPrice << "计算客户" << it->cc.cust_no << "浮动盈亏" << it->cc.float_profit << ","
 						<< "动态权益" << it->cc.dynamic_capital << ",权益小于强平线" << it->force_line << "触发强平"
 						<< SAFE_COUT_END;
 					result = BCRequestCustStatusSet_851005(handle, it->cc.cust_no, "4");
@@ -220,7 +222,7 @@ void market_calc_capital()
 	}
 }
 
-void force()
+void qry_force()
 {
 	SAFE_COUT_BEGINE << "后台权益更新－强平线程开始工作" << SAFE_COUT_END;
 	BCResult result;
@@ -265,7 +267,7 @@ void force()
 			if (!force_cust_positions(handle, p))
 				continue;
 
-			SAFE_COUT_BEGINE << "查询后台取得客户动态权益" << sc.dynamic_capital << "小于强平线" << it->force_line << "触发强平" << SAFE_COUT_END;
+			SAFE_COUT_BEGINE << it->cc.cust_no << "查询后台取得客户动态权益" << sc.dynamic_capital << "小于强平线" << it->force_line << "触发强平" << SAFE_COUT_END;
 
 			result = BCRequestCustStatusSet_851005(handle, it->cc.cust_no, "4");
 			if (!result)
@@ -390,9 +392,14 @@ void qry_capital_position()
 			result = BCRequestCustCaptial_854196(handle, ccpit->cc.cust_no, cap);
 			if (!result)
 			{
-				SAFE_COUT_BEGINE << ccpit->cc.cust_no << "查询客户权益失败，不能探测客户是否强平" << SAFE_COUT_END;
+				SAFE_COUT_BEGINE << ccpit->cc.cust_no << "查询客户权益失败，不能探测客户是否强平，" << result.errmsg << SAFE_COUT_END;
 				continue;
 			}
+			
+			/*有无效的客户权益返回，这里加个客户号的判断*
+			*/
+			if (strcmp(ccpit->cc.cust_no, cap.cust_no))
+				continue;
 
 			if (ccpit->cc.margin != cap.margin)
 			{
@@ -506,8 +513,12 @@ try
 	
 	std::thread qry_cp_the(qry_capital_position);
 	std::thread market_force(market_calc_capital);
-	std::thread backend_force(force);
-	//int max_seq = 0;
+	
+	/*由于后台计算的结果和SManager不一致，暂时不使用这个线程*
+	* 完全依赖于行情计算
+	*/
+	//std::thread backend_force(qry_force);
+	
 	Scoped_BCHANDLE handle;
 	BCResult result;
 	for (;;)

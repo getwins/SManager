@@ -99,7 +99,7 @@ void load_conf()
 {
 	boost::property_tree::ptree ptree;
 	boost::property_tree::read_ini(g_conf, ptree);
-
+	g_cfg.logklg = ptree.get<int>("common.logklg", 0);
 	std::string host = ptree.get<std::string>("drtp.host");
 	host.copy(g_cfg.host, sizeof(g_cfg.host));
 	g_cfg.port = ptree.get<int>("drtp.port", 3000);
@@ -153,7 +153,7 @@ void MyBCCLTInit()
 	//if (g_cfg.drtpno< 0)
 	//	throw std::runtime_error("BCAddDrtpNode failed");
 
-	BCSetDebugSwitch(true);
+	BCSetDebugSwitch(g_cfg.logklg);
 
 	BCHANDLE handle = BCNewHandle("cpack.dat");
 	if(handle == NULL)
@@ -266,61 +266,62 @@ std::vector<std::string> GetOutputMsgs()
 	return ret;
 }
 
+//
+//void RequestCustOrder(BCHANDLE handle, char *cust_no, char *date)
+//{
+//	FetchRowFunc_t fetcher = [](BCHANDLE handle, int row) {
+//		cust_order_st ord = { 0 };
+//		BCGetStringFieldByName(handle, row, "sdate0", ord.date, sizeof(ord.date));
+//		BCGetIntFieldByName(handle, row, "lserial0", &ord.orderseq);
+//		BCGetStringFieldByName(handle, row, "smarket_code", ord.exchangeid, sizeof(ord.exchangeid));
+//		BCGetStringFieldByName(handle, row, "sstock_code", ord.productid, sizeof(ord.productid));
+//		BCGetStringFieldByName(handle, row, "sdate1", ord.delivery_date, sizeof(ord.delivery_date));
+//		BCGetStringFieldByName(handle, row, "sstatus0", ord.order_status, sizeof(ord.order_status));
+//		BCGetStringFieldByName(handle, row, "sstatus1", ord.offset_flag, sizeof(ord.offset_flag));
+//		BCGetStringFieldByName(handle, row, "sstatus2", ord.hedge_flag, sizeof(ord.hedge_flag));
+//		BCGetStringFieldByName(handle, row, "sstatus3", ord.direction, sizeof(ord.direction));
+//		BCGetDoubleFieldByName(handle, row, "damt0", &ord.order_price);
+//		BCGetIntFieldByName(handle, row, "lvol0", &ord.origin_total_volume);
+//		BCGetIntFieldByName(handle, row, "lvol1", &ord.total_volume);
+//		BCGetDoubleFieldByName(handle, row, "damt1", &ord.traded_price);
+//		BCGetIntFieldByName(handle, row, "lvol2", &ord.traded_volume);
+//		BCGetStringFieldByName(handle, row, "sorder0", ord.sysid, sizeof(ord.sysid));
+//		BCGetStringFieldByName(handle, row, "stime0", ord.order_time, sizeof(ord.order_time));
+//		BCGetStringFieldByName(handle, row, "stime1", ord.insert_time, sizeof(ord.insert_time));
+//		BCGetStringFieldByName(handle, row, "sholder_ac_no2", ord.trade_no, sizeof(ord.trade_no));
+//		BCGetStringFieldByName(handle, row, "sholder_type", ord.order_way, sizeof(ord.order_way));
+//		BCGetStringFieldByName(handle, row, "scust_no2", ord.cancel_cust, sizeof(ord.cancel_cust));
+//		BCGetStringFieldByName(handle, row, "stime2", ord.cancel_time, sizeof(ord.cancel_time));
+//		BCGetStringFieldByName(handle, row, "sstatus4", ord.order_type, sizeof(ord.order_type));
+//		BCGetStringFieldByName(handle, row, "sserial2", ord.seatid, sizeof(ord.seatid));
+//		BCGetStringFieldByName(handle, row, "scurrency_type", ord.currency, sizeof(ord.currency));
+//	};
+//}
+//
+//void RequestCustTrade(BCHANDLE handle, char *cust_no, char *date)
+//{
+//	FetchRowFunc_t fetcher = [](BCHANDLE handle, int row) {
+//		cust_order_st ord = { 0 };
+//		cust_trade_st tra = { 0 };
+//		BCGetStringFieldByName(handle, row, "sdate0", tra.date, sizeof(tra.date));
+//		BCGetIntFieldByName(handle, row, "lserial0", &tra.orderseq);
+//		BCGetStringFieldByName(handle, row, "sholder_ac_no2", tra.trade_no, sizeof(tra.trade_no));
+//		BCGetStringFieldByName(handle, row, "smarket_code", tra.exchangeid, sizeof(tra.exchangeid));
+//		BCGetStringFieldByName(handle, row, "sstock_code", tra.productid, sizeof(tra.productid));
+//		BCGetStringFieldByName(handle, row, "sdate1", tra.delivery_date, sizeof(tra.delivery_date));
+//		BCGetStringFieldByName(handle, row, "sstatus3", tra.direction, sizeof(tra.direction));
+//		BCGetDoubleFieldByName(handle, row, "damt1", &tra.price);
+//		BCGetIntFieldByName(handle, row, "lvol2", &tra.volume);
+//		BCGetStringFieldByName(handle, row, "sstatus1", tra.offset_flag, sizeof(tra.offset_flag));
+//		BCGetStringFieldByName(handle, row, "sstatus2", tra.hedge_flag, sizeof(tra.hedge_flag));
+//		BCGetStringFieldByName(handle, row, "sorder0", tra.sysid, sizeof(tra.sysid));
+//		BCGetStringFieldByName(handle, row, "sserial2", tra.seatid, sizeof(tra.seatid));
+//		BCGetStringFieldByName(handle, row, "scurrency_type", tra.currency, sizeof(tra.currency));
+//		BCGetStringFieldByName(handle, row, "sstatus0", tra.force_close, sizeof(tra.force_close));
+//
+//	};
+//}
 
-void RequestCustOrder(BCHANDLE handle, char *cust_no, char *date)
-{
-	FetchRowFunc_t fetcher = [](BCHANDLE handle, int row) {
-		cust_order_st ord = { 0 };
-		BCGetStringFieldByName(handle, row, "sdate0", ord.date, sizeof(ord.date));
-		BCGetIntFieldByName(handle, row, "lserial0", &ord.orderseq);
-		BCGetStringFieldByName(handle, row, "smarket_code", ord.exchangeid, sizeof(ord.exchangeid));
-		BCGetStringFieldByName(handle, row, "sstock_code", ord.productid, sizeof(ord.productid));
-		BCGetStringFieldByName(handle, row, "sdate1", ord.delivery_date, sizeof(ord.delivery_date));
-		BCGetStringFieldByName(handle, row, "sstatus0", ord.order_status, sizeof(ord.order_status));
-		BCGetStringFieldByName(handle, row, "sstatus1", ord.offset_flag, sizeof(ord.offset_flag));
-		BCGetStringFieldByName(handle, row, "sstatus2", ord.hedge_flag, sizeof(ord.hedge_flag));
-		BCGetStringFieldByName(handle, row, "sstatus3", ord.direction, sizeof(ord.direction));
-		BCGetDoubleFieldByName(handle, row, "damt0", &ord.order_price);
-		BCGetIntFieldByName(handle, row, "lvol0", &ord.origin_total_volume);
-		BCGetIntFieldByName(handle, row, "lvol1", &ord.total_volume);
-		BCGetDoubleFieldByName(handle, row, "damt1", &ord.traded_price);
-		BCGetIntFieldByName(handle, row, "lvol2", &ord.traded_volume);
-		BCGetStringFieldByName(handle, row, "sorder0", ord.sysid, sizeof(ord.sysid));
-		BCGetStringFieldByName(handle, row, "stime0", ord.order_time, sizeof(ord.order_time));
-		BCGetStringFieldByName(handle, row, "stime1", ord.insert_time, sizeof(ord.insert_time));
-		BCGetStringFieldByName(handle, row, "sholder_ac_no2", ord.trade_no, sizeof(ord.trade_no));
-		BCGetStringFieldByName(handle, row, "sholder_type", ord.order_way, sizeof(ord.order_way));
-		BCGetStringFieldByName(handle, row, "scust_no2", ord.cancel_cust, sizeof(ord.cancel_cust));
-		BCGetStringFieldByName(handle, row, "stime2", ord.cancel_time, sizeof(ord.cancel_time));
-		BCGetStringFieldByName(handle, row, "sstatus4", ord.order_type, sizeof(ord.order_type));
-		BCGetStringFieldByName(handle, row, "sserial2", ord.seatid, sizeof(ord.seatid));
-		BCGetStringFieldByName(handle, row, "scurrency_type", ord.currency, sizeof(ord.currency));
-	};
-}
-
-void RequestCustTrade(BCHANDLE handle, char *cust_no, char *date)
-{
-	FetchRowFunc_t fetcher = [](BCHANDLE handle, int row) {
-		cust_order_st ord = { 0 };
-		cust_trade_st tra = { 0 };
-		BCGetStringFieldByName(handle, row, "sdate0", tra.date, sizeof(tra.date));
-		BCGetIntFieldByName(handle, row, "lserial0", &tra.orderseq);
-		BCGetStringFieldByName(handle, row, "sholder_ac_no2", tra.trade_no, sizeof(tra.trade_no));
-		BCGetStringFieldByName(handle, row, "smarket_code", tra.exchangeid, sizeof(tra.exchangeid));
-		BCGetStringFieldByName(handle, row, "sstock_code", tra.productid, sizeof(tra.productid));
-		BCGetStringFieldByName(handle, row, "sdate1", tra.delivery_date, sizeof(tra.delivery_date));
-		BCGetStringFieldByName(handle, row, "sstatus3", tra.direction, sizeof(tra.direction));
-		BCGetDoubleFieldByName(handle, row, "damt1", &tra.price);
-		BCGetIntFieldByName(handle, row, "lvol2", &tra.volume);
-		BCGetStringFieldByName(handle, row, "sstatus1", tra.offset_flag, sizeof(tra.offset_flag));
-		BCGetStringFieldByName(handle, row, "sstatus2", tra.hedge_flag, sizeof(tra.hedge_flag));
-		BCGetStringFieldByName(handle, row, "sorder0", tra.sysid, sizeof(tra.sysid));
-		BCGetStringFieldByName(handle, row, "sserial2", tra.seatid, sizeof(tra.seatid));
-		BCGetStringFieldByName(handle, row, "scurrency_type", tra.currency, sizeof(tra.currency));
-		BCGetStringFieldByName(handle, row, "sstatus0", tra.force_close, sizeof(tra.force_close));
-
-	};
-}
 // CSManagerApp
 
 BEGIN_MESSAGE_MAP(CSManagerApp, CWinAppEx)
@@ -546,6 +547,7 @@ void CSManagerApp::AsyncRequestBaseInfo()
 	std::ostringstream oss;
 	oss << "基本信息查询线程结束,thread_id=" << std::showbase << std::hex << std::this_thread::get_id();
 	PostOutputMsg(oss.str());
+
 	//BCDeleteHandle(handle);
 }
 
@@ -1041,9 +1043,9 @@ void SetWindowsCaption()
 	std::vector<oper_sm_perm_st>::iterator it1, it2;
 	it1 = std::find_if(theApp.m_perms.begin(), theApp.m_perms.end(), [](oper_sm_perm_st &perm) { return strcmp(perm.type, "001") == 0; });
 	it2 = std::find_if(theApp.m_perms.begin(), theApp.m_perms.end(), [](oper_sm_perm_st &perm) { return strcmp(perm.type, "002") == 0; });
-
+	//FindResourceEx()
 	CString caption;
-	caption.Format("后台管理系统 v0.4-%s 开户数量:%s 使用期限:%s",
+	caption.Format("后台管理系统 v0.5-%s 开户数量:%s 使用期限:%s",
 		g_cfg.oper_code, 
 		(it1 == theApp.m_perms.end() ? "无设置" : it1->param),
 		(it2 == theApp.m_perms.end() ? "无设置" : it2->param));
