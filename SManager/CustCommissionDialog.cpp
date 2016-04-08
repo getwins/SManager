@@ -9,6 +9,7 @@
 #include "CommBCRequest.h"
 #include "Format.h"
 #include "CustCommissionRateSettingDialog.h"
+#include <boost/algorithm/string.hpp>
 // CCustCommissionDialog ¶Ô»°¿ò
 
 IMPLEMENT_DYNAMIC(CCustCommissionDialog, CDialogEx)
@@ -125,7 +126,8 @@ void CCustCommissionDialog::OnBnClickedButtonModify()
 	dlg.m_ctlCust.SelectKey(ccr.cust_no);
 	dlg.m_ctlExchange.SelectKey(ccr.exchangeid);
 	dlg.m_ctlProduct.SelectKey(ccr.productid);
-	dlg.m_Date = ccr.delivery_date;
+	//boost::trim(ccr.delivery_date);
+	dlg.m_Date = boost::trim_copy(std::string(ccr.delivery_date)).c_str();
 	dlg.m_ByAmt = ccr.commission_rate_by_money;
 	dlg.m_ByVol = ccr.commission_rate_by_volume;
 	dlg.m_TdByAmt = ccr.offset_td_commission_rate_by_money;
@@ -155,7 +157,8 @@ void CCustCommissionDialog::OnBnClickedButtonDelete()
 	dlg.m_ctlCust.SelectKey(ccr.cust_no);
 	dlg.m_ctlExchange.SelectKey(ccr.exchangeid);
 	dlg.m_ctlProduct.SelectKey(ccr.productid);
-	dlg.m_Date = ccr.delivery_date;
+	//boost::trim(ccr.delivery_date);
+	dlg.m_Date = boost::trim_copy(std::string(ccr.delivery_date)).c_str();
 	dlg.m_ByAmt = ccr.commission_rate_by_money;
 	dlg.m_ByVol = ccr.commission_rate_by_volume;
 	dlg.m_TdByAmt = ccr.offset_td_commission_rate_by_money;
