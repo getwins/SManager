@@ -11,6 +11,7 @@ SManager/Proxy_Debug
 SManager/Proxy_Release
 bin/SManagerp.*
 bin/Smanagerp_d.*
+bin/*.7z
 
 SMRiskSvr/Debug
 SMRiskSvr/Release

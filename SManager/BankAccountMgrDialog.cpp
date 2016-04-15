@@ -62,6 +62,7 @@ void CBankAccountMgrDialog::OnBnClickedButtonQuery()
 		return;
 	}
 	m_BankAccount = ba.bank_acc;
+	m_MoneyPasswd = "";
 	UpdateData(FALSE);
 }
 
