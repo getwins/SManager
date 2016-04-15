@@ -23,7 +23,8 @@
 //#include "MdApi.h"
 #include "Format.h"
 #include "struct_helper.h"
-//#include <sstream>
+#include <fstream>
+#include <iomanip>
 
 #include "CustMoneyInOutDialog.h"
 #include "CustStatusMaintainDialog.h"
@@ -39,6 +40,7 @@
 #include "CustCommissionDialog.h"
 #include "CustMarginDialog.h"
 #include "BankAccountMgrDialog.h"
+
 
 // CSManagerView
 
@@ -80,6 +82,7 @@ BEGIN_MESSAGE_MAP(CSManagerView, CView)
 	ON_COMMAND(ID_CUST_COMMISSION_RATE_SETTING, &CSManagerView::OnCustCommissionRateSetting)
 	ON_COMMAND(ID_CUST_MARGIN_RATE_SETTING, &CSManagerView::OnCustMarginRateSetting)
 	ON_COMMAND(ID_BANKACCOUT, &CSManagerView::OnBankaccout)
+	ON_COMMAND(ID_EXPORT_CUSTINFO, &CSManagerView::OnExportCustinfo)
 END_MESSAGE_MAP()
 
 // CSManagerView 构造/析构
@@ -1105,4 +1108,48 @@ void CSManagerView::OnBankaccout()
 		dlg.m_ctlCust.SelectKey(cust_no);
 	}
 	dlg.DoModal();
+}
+
+
+void CSManagerView::OnExportCustinfo()
+{
+	// TODO: 在此添加命令处理程序代码
+	CFileDialog dlg(FALSE, "txt", NULL, OFN_OVERWRITEPROMPT, NULL, this);
+	if (dlg.DoModal() != IDOK)
+		return;
+
+	CString path = dlg.GetPathName();
+	std::ofstream ofs(path.GetBuffer());
+	if (!ofs.good())
+	{
+		MessageBox("打开文件失败");
+		return;
+	}
+
+	int rows = m_listctrl.GetItemCount();
+	int cols = m_listctrl.GetHeaderCtrl().GetItemCount();
+	for (int i = 0; i < cols; i++)
+	{
+		HDITEM   hdi;
+		char     lpBuffer[256];
+		LPCTSTR   lpszmyString;
+		hdi.mask = HDI_TEXT;
+		hdi.pszText = lpBuffer;
+		hdi.cchTextMax = 256;
+		m_listctrl.GetHeaderCtrl().GetItem(i, &hdi);
+		ofs << std::setw(20) << lpBuffer << ',';
+	}
+	ofs << std::endl;
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			CString str = m_listctrl.GetItemText(i, j);
+			ofs << std::setw(20) << str.GetBuffer() << ',';
+		}
+		ofs << std::endl;
+	}
+
+	ofs.close();
 }

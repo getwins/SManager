@@ -363,7 +363,6 @@
 #define ID_SUMMARY_OFFSET_PROFIT        32916
 #define ID_COMMISSION_CAPTION           32917
 #define ID_SUMMARY_COMMISSION           32918
-//#define ID_32918                        32918
 #define ID_MESSAGEBEE                   32919
 #define ID_CUST_COMMISSION_RATE_SETTING 32920
 #define ID_CUST_MARGIN_RATE_SETTING     32921
@@ -377,14 +376,15 @@
 #define ID_32930                        32930
 #define ID_BANKACCOUT                   32931
 #define ID_BUTTON32932                  32932
-
+#define ID_32934                        32934
+#define ID_EXPORT_CUSTINFO              32935
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        396
-#define _APS_NEXT_COMMAND_VALUE         32934
+#define _APS_NEXT_COMMAND_VALUE         32936
 #define _APS_NEXT_CONTROL_VALUE         1114
 #define _APS_NEXT_SYMED_VALUE           320
 #endif

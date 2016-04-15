@@ -133,6 +133,7 @@ public:
 	afx_msg void OnCustCommissionRateSetting();
 	afx_msg void OnCustMarginRateSetting();
 	afx_msg void OnBankaccout();
+	afx_msg void OnExportCustinfo();
 };
 
 #ifndef _DEBUG  // SManagerView.cpp 中的调试版本

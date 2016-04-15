@@ -571,6 +571,7 @@ BEGIN
         MENUITEM "客户风控规则设置",                    ID_CUST_RISK_CONTROL_SETTING
         MENUITEM "显示所有客户持仓",                    ID_SHOW_ALL_CUST_POSITION
         MENUITEM "银行账户管理",                      ID_BANKACCOUT
+        MENUITEM "导出客户信息",                      ID_EXPORT_CUSTINFO
     END
 END
 
@@ -587,6 +588,7 @@ BEGIN
             MENUITEM "结算单查询",                       ID_SETTLEMENT_QUERY
         END
         MENUITEM "显示所有客户持仓",                    ID_SHOW_ALL_CUST_POSITION
+        MENUITEM "导出客户信息",                      ID_EXPORT_CUSTINFO
     END
 END
 
