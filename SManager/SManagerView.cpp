@@ -73,6 +73,7 @@ BEGIN_MESSAGE_MAP(CSManagerView, CView)
 	//ON_COMMAND(ID_SUMMARY_FLOAT_PROFIT, OnSummaryFloatProfit)
 	ON_COMMAND(ID_FP_CAPTION, &CSManagerView::OnFpCaption)
 	ON_COMMAND(ID_OP_CAPTION, &CSManagerView::OnOpCaption)
+	ON_COMMAND(ID_COMMISSION_CAPTION, &CSManagerView::OnCommissionCaption)
 	ON_COMMAND(ID_SUMMARY_CAPTION, &CSManagerView::OnSummaryCaption)
 	//ON_COMMAND(ID_MESSAGEBEE, &CSManagerView::OnMessagebee)
 	//ON_UPDATE_COMMAND_UI(ID_MESSAGEBEE, &CSManagerView::OnUpdateMessagebee)
@@ -234,6 +235,9 @@ int CSManagerView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndToolBar.ReplaceButton(ID_SUMMARY_OFFSET_PROFIT,
 		CMFCToolBarEditBoxButton(ID_SUMMARY_OFFSET_PROFIT, GetCmdMgr()->GetCmdImage(ID_SUMMARY_OFFSET_PROFIT, FALSE)));
+
+	m_wndToolBar.ReplaceButton(ID_SUMMARY_COMMISSION,
+		CMFCToolBarEditBoxButton(ID_SUMMARY_COMMISSION, GetCmdMgr()->GetCmdImage(ID_SUMMARY_COMMISSION, FALSE)));
 	
 
 
@@ -993,11 +997,12 @@ void CSManagerView::OnCustRiskControlSetting()
 
 void CSManagerView::DisplaySummary()
 {
-	double s_float_profit = 0.0, s_offset_profit = 0.0;
+	double s_float_profit = 0.0, s_offset_profit = 0.0, s_commission = 0.0;
 	for each (auto var in m_mCapital)
 	{
 		s_float_profit += var.second.float_profit;
 		s_offset_profit += var.second.offset_profit;
+		s_commission += var.second.commission;
 	}
 	
 	CMFCToolBarEditBoxButton* pSrcEdit = CMFCToolBarEditBoxButton::GetByCmd(ID_SUMMARY_FLOAT_PROFIT);
@@ -1014,6 +1019,12 @@ void CSManagerView::DisplaySummary()
 		//m_wndToolBar.ReplaceButton(ID_SUMMARY_OFFSET_PROFIT, *pSrcEdit2);
 	}
 	
+	CMFCToolBarEditBoxButton *pSrcEdit3 = CMFCToolBarEditBoxButton::GetByCmd(ID_SUMMARY_COMMISSION);
+	if (pSrcEdit3)
+	{
+		pSrcEdit3->SetContents(fundfmt(s_commission));
+	}
+
 }
 
 
@@ -1028,6 +1039,11 @@ void CSManagerView::OnOpCaption()
 	// TODO: 在此添加命令处理程序代码
 }
 
+
+void CSManagerView::OnCommissionCaption()
+{
+	// TODO: 在此添加命令处理程序代码
+}
 
 void CSManagerView::OnSummaryCaption()
 {

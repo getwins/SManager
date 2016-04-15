@@ -126,6 +126,7 @@ public:
 	void DisplaySummary();
 	afx_msg void OnFpCaption();
 	afx_msg void OnOpCaption();
+	afx_msg void OnCommissionCaption();
 	afx_msg void OnSummaryCaption();
 	//afx_msg void OnMessagebee();
 	//afx_msg void OnUpdateMessagebee(CCmdUI *pCmdUI);
