@@ -38,6 +38,7 @@
 #include "CustRiskControlSettingDialog.h"
 #include "CustCommissionDialog.h"
 #include "CustMarginDialog.h"
+#include "BankAccountMgrDialog.h"
 
 // CSManagerView
 
@@ -77,6 +78,7 @@ BEGIN_MESSAGE_MAP(CSManagerView, CView)
 	//ON_UPDATE_COMMAND_UI(ID_MESSAGEBEE, &CSManagerView::OnUpdateMessagebee)
 	ON_COMMAND(ID_CUST_COMMISSION_RATE_SETTING, &CSManagerView::OnCustCommissionRateSetting)
 	ON_COMMAND(ID_CUST_MARGIN_RATE_SETTING, &CSManagerView::OnCustMarginRateSetting)
+	ON_COMMAND(ID_BANKACCOUT, &CSManagerView::OnBankaccout)
 END_MESSAGE_MAP()
 
 // CSManagerView 构造/析构
@@ -1066,6 +1068,20 @@ void CSManagerView::OnCustMarginRateSetting()
 {
 	// TODO: 在此添加命令处理程序代码
 	CCustMarginDialog dlg;
+	int sel = m_listctrl.GetSelectionMark();
+	if (sel >= 0 && sel < m_listctrl.GetItemCount())
+	{
+		CString cust_no = m_listctrl.GetItemText(sel, 0);
+		dlg.m_ctlCust.SelectKey(cust_no);
+	}
+	dlg.DoModal();
+}
+
+
+void CSManagerView::OnBankaccout()
+{
+	// TODO: 在此添加命令处理程序代码
+	CBankAccountMgrDialog dlg;
 	int sel = m_listctrl.GetSelectionMark();
 	if (sel >= 0 && sel < m_listctrl.GetItemCount())
 	{

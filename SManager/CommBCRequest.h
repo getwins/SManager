@@ -40,3 +40,8 @@ BCResult BCRequestSysInfo_100319(BCHANDLE handle, system_info_st &o_sysinfo);
 BCResult BCRequestCustCapital_854196(BCHANDLE handle, const std::string &cust_no, cust_capital_st &o_capital);
 
 BCResult BCRequestCustLoginInfo_854093(BCHANDLE handle, const std::string &cust_no, cust_login_info_st &o_cli);
+
+BCResult BCRequestBankFutureSignin_858111(BCHANDLE handle, bank_account_st &ba);
+BCResult BCRequestBankFutureSignout_858112(BCHANDLE handle, bank_account_st &ba);
+BCResult BCRequestQryBankFuture_858222(BCHANDLE handle, bank_account_st &ba);
+

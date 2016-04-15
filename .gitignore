@@ -27,4 +27,4 @@ bin/bclog
 back/
 *.aps
 *.vcxproj.user
-SManager.VC.operdb
+SManager.VC.opendb

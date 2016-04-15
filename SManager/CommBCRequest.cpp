@@ -755,3 +755,52 @@ BCResult BCRequestCustLoginInfo_854093(BCHANDLE handle, const std::string &cust_
 
 	return MyBCRequest(handle, fetcher, BCMSG_NO);
 }
+
+BCResult BCRequestBankFutureSignin_858111(BCHANDLE handle, bank_account_st &ba)
+{
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 858111);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", ba.cust_no);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no2", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_type", ba.req_type); //03
+	BCSetStringFieldByName(handle, 0, "sholder_type2", ba.cust_type);
+	BCSetStringFieldByName(handle, 0, "swithdraw_pwd", ba.fund_passwd);
+	BCSetStringFieldByName(handle, 0, "swithdraw_pwd2", ba.bank_passwd);
+	BCSetStringFieldByName(handle, 0, "scurrency_type", ba.currency_type);
+	BCSetStringFieldByName(handle, 0, "sbank_acc", ba.bank_acc);
+	BCSetStringFieldByName(handle, 0, "sbank_code", ba.bank_code);
+	BCSetDoubleFieldByName(handle, 0, "drate0", ba.ratio);
+	
+	return MyBCRequest(handle);
+}
+BCResult BCRequestBankFutureSignout_858112(BCHANDLE handle, bank_account_st &ba)
+{
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 858112);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", ba.cust_no);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no2", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_type", ba.req_type); //04
+	BCSetStringFieldByName(handle, 0, "sholder_type2", ba.cust_type);
+	BCSetStringFieldByName(handle, 0, "swithdraw_pwd", ba.fund_passwd);
+	BCSetStringFieldByName(handle, 0, "swithdraw_pwd2", ba.bank_passwd);
+	BCSetStringFieldByName(handle, 0, "scurrency_type", ba.currency_type);
+	BCSetStringFieldByName(handle, 0, "sbank_acc", ba.bank_acc);
+	BCSetStringFieldByName(handle, 0, "sbank_code", ba.bank_code);
+	BCSetDoubleFieldByName(handle, 0, "drate0", ba.ratio);
+
+	return MyBCRequest(handle);
+}
+BCResult BCRequestQryBankFuture_858222(BCHANDLE handle, bank_account_st &ba)
+{
+	FetchRowFunc_t fetcher = [&](BCHANDLE handle, int row)
+	{
+		BCGetStringFieldByName(handle, row, "sbank_acc", ba.bank_acc, sizeof(ba.bank_acc));
+		//BCGetStringFieldByName(handle, 0, )
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 858222);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", ba.cust_no);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	return MyBCRequest(handle, fetcher);
+}

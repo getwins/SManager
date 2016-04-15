@@ -131,6 +131,7 @@ public:
 	//afx_msg void OnUpdateMessagebee(CCmdUI *pCmdUI);
 	afx_msg void OnCustCommissionRateSetting();
 	afx_msg void OnCustMarginRateSetting();
+	afx_msg void OnBankaccout();
 };
 
 #ifndef _DEBUG  // SManagerView.cpp 中的调试版本

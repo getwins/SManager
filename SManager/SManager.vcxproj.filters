@@ -195,6 +195,9 @@
     <ClInclude Include="ProxyOperSettingDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BankAccountMgrDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SManager.cpp">
@@ -353,6 +356,9 @@
     <ClCompile Include="ProxyOperSettingDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="BankAccountMgrDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SManager.rc">
@@ -441,9 +447,6 @@
     <Image Include="res\icon1.ico">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\u18.ico">
-      <Filter>资源文件</Filter>
-    </Image>
     <Image Include="res\bmp00001.bmp">
       <Filter>资源文件</Filter>
     </Image>
@@ -453,22 +456,16 @@
     <Image Include="res\bmp00003.bmp">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\SManager(2).ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="res\图标3.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="res\u4.ico">
-      <Filter>资源文件</Filter>
-    </Image>
     <Image Include="res\icon2.ico">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\u4 (2).ico">
+    <Image Include="res\idr_main.ico">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="res\idr_main.ico">
+    <Image Include="res\mainframe1.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\mainframe2.ico">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

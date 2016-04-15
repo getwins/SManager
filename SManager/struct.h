@@ -897,3 +897,37 @@ struct oper_cust_correspond_st
 	char cust_class[13];
 	char cust_status[2];
 };
+
+//输入		input
+//银行代码		sbank_code
+//银行帐号		sbank_acc
+//客户号		sholder_ac_no
+//期货资金密码		swithdraw_pwd
+//银行密码		swithdraw_pwd2
+//请求类别		sholder_type
+//客户类别		sholder_type2
+//取款比例		drate0
+//期货流水号		sholder_ac_no2
+//错误信息		scert_no
+//证件类型		scust_no
+//币种		scurrency_type
+//银行客户号		ssectypes
+//银行操作员代码		sorder0
+
+struct bank_account_st
+{
+	char bank_code[7];
+	char bank_acc[41];
+	char cust_no[16];
+	char fund_passwd[9];
+	char bank_passwd[9];
+	char req_type[3];
+	char cust_type[3];
+	double ratio;
+	char serial[16];
+	char errmsg[51];
+	char cert_type[11];
+	char currency_type[3];
+	char bank_cust_no[201];
+	char bank_oper_code[11];
+};

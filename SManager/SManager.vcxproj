@@ -399,6 +399,7 @@ copy res\\mainframe2.ico res\\SManager.ico </Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddTemplateDialog.h" />
+    <ClInclude Include="BankAccountMgrDialog.h" />
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="CommBCRequest.h" />
     <ClInclude Include="CommissionTemplateManageDialog.h" />
@@ -460,6 +461,7 @@ copy res\\mainframe2.ico res\\SManager.ico </Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddTemplateDialog.cpp" />
+    <ClCompile Include="BankAccountMgrDialog.cpp" />
     <ClCompile Include="ClassView.cpp" />
     <ClCompile Include="CommBCRequest.cpp" />
     <ClCompile Include="CommissionTemplateManageDialog.cpp" />

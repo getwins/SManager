@@ -142,6 +142,7 @@
 #define IDD_PROXY_OPER_SETTING          388
 #define IDI_ICON2                       390
 #define IDR_POPUP_CUST_PROXY_QUERY      391
+#define IDD_BANKACCOUNT                 393
 #define IDC_LIST_POSITION               1000
 #define IDC_RADIO_POSITION              1001
 #define IDC_RADIO_POSITION_DETAIL       1002
@@ -193,6 +194,7 @@
 #define IDC_COMBO_MARGIN                1048
 #define IDC_COMBO_CUST                  1049
 #define IDC_COMBO_CUST_STATUS           1050
+#define IDC_COMBO_BANK                  1050
 #define IDC_EDIT_CUST_STATUS            1052
 #define IDC_EDIT_AMOUNT                 1052
 #define IDC_EDIT_CARD_TYPE              1053
@@ -247,6 +249,11 @@
 #define IDC_BUTTON_ALL_IN               1106
 #define IDC_BUTTON_ALL_OUT              1107
 #define IDC_STATIC_PROXY_OPER           1109
+#define IDC_BUTTON_SIGNIN               1111
+#define IDC_BUTTON_SIGNOUT              1112
+#define IDC_EDIT1                       1113
+#define IDC_                            1113
+#define IDC_EDIT_BANKACCOUNT            1114
 #define ID_32772                        32772
 #define ID_32773                        32773
 #define ID_PS_POSITION                  32774
@@ -365,14 +372,16 @@
 #define ID_Menu32926                    32926
 #define ID_PROXY_OPER_SETTING           32927
 #define ID_32928                        32928
+#define ID_32930                        32930
+#define ID_BANKACCOUT                   32931
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        393
-#define _APS_NEXT_COMMAND_VALUE         32930
-#define _APS_NEXT_CONTROL_VALUE         1110
+#define _APS_NEXT_RESOURCE_VALUE        396
+#define _APS_NEXT_COMMAND_VALUE         32932
+#define _APS_NEXT_CONTROL_VALUE         1114
 #define _APS_NEXT_SYMED_VALUE           320
 #endif
 #endif
