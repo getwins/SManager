@@ -1137,7 +1137,7 @@ void CSManagerView::OnExportCustinfo()
 		hdi.pszText = lpBuffer;
 		hdi.cchTextMax = 256;
 		m_listctrl.GetHeaderCtrl().GetItem(i, &hdi);
-		ofs << std::setw(20) << lpBuffer << ',';
+		ofs << std::left << std::setw(10) << lpBuffer << ',';
 	}
 	ofs << std::endl;
 
@@ -1146,7 +1146,7 @@ void CSManagerView::OnExportCustinfo()
 		for (int j = 0; j < cols; j++)
 		{
 			CString str = m_listctrl.GetItemText(i, j);
-			ofs << std::setw(20) << str.GetBuffer() << ',';
+			ofs << std::left << std::setw(10) << str.GetBuffer() << ',';
 		}
 		ofs << std::endl;
 	}
