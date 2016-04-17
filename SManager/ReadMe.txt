@@ -90,3 +90,6 @@ SManager.manifest
 note
 1. 后台管理的操作员不能设置成受限的操作员
    因为客户登陆信息查询的会返回其代理组的所有客户的登录信息.
+2. version 6.4.17
+	cust commission summary
+	exprot cust information

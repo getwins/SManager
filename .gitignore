@@ -28,3 +28,4 @@ back/
 *.aps
 *.vcxproj.user
 SManager.VC.opendb
+*~
