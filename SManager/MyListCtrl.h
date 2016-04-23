@@ -41,6 +41,8 @@ public:
 	//virtual COLORREF OnGetCellBkColor(int nRow, int nColum); //{ return GetBkColor(); }
 	virtual HFONT OnGetCellFont(int nRow, int nColum, DWORD dwData = 0); //{ return NULL; }
 
+	virtual int OnCompareItems(LPARAM lParam1, LPARAM lParam2, int iColumn);
+
 	FontWeithtMap m_mfw;
 	std::vector<LVCELL> m_vlvcell;
 	LVCELL * find_lvcell(int row, int col);

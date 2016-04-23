@@ -265,7 +265,10 @@ int CSManagerView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	};
 
 	for (int i = 0; i < sizeof(cols) / sizeof(cols[0]); ++i)
+	{
 		m_listctrl.InsertColumn(i, &cols[i]);
+	}
+		
 
 	return 0;
 }
@@ -533,6 +536,7 @@ void CSManagerView::HandleCustBaseInfo_CountChanged()
 	for (int i = 0; i < m_CurCBIs.size(); i++)
 	{
 		m_listctrl.InsertItem(i, m_CurCBIs[i].basic.scust_no);
+		m_listctrl.SetItemData(i, i);
 		ResetListCustBaseInfo(m_CurCBIs[i]);
 		HandleCustDynamicInfo_LoginInfo(m_CurCBIs[i].basic.scust_no);
 		HandleCustDynamicInfo_Capital(m_CurCBIs[i].basic.scust_no);
@@ -1114,7 +1118,7 @@ void CSManagerView::OnBankaccout()
 void CSManagerView::OnExportCustinfo()
 {
 	// TODO: 在此添加命令处理程序代码
-	CFileDialog dlg(FALSE, "txt", NULL, OFN_OVERWRITEPROMPT, NULL, this);
+	CFileDialog dlg(FALSE, "xls", NULL, OFN_OVERWRITEPROMPT, NULL, this);
 	if (dlg.DoModal() != IDOK)
 		return;
 
@@ -1137,7 +1141,7 @@ void CSManagerView::OnExportCustinfo()
 		hdi.pszText = lpBuffer;
 		hdi.cchTextMax = 256;
 		m_listctrl.GetHeaderCtrl().GetItem(i, &hdi);
-		ofs << std::left << std::setw(10) << lpBuffer << ',';
+		ofs << std::left << std::setw(10) << lpBuffer << '\t';
 	}
 	ofs << std::endl;
 
@@ -1146,7 +1150,7 @@ void CSManagerView::OnExportCustinfo()
 		for (int j = 0; j < cols; j++)
 		{
 			CString str = m_listctrl.GetItemText(i, j);
-			ofs << std::left << std::setw(10) << str.GetBuffer() << ',';
+			ofs << std::left << std::setw(10) << str.GetBuffer() << '\t';
 		}
 		ofs << std::endl;
 	}

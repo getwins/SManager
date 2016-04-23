@@ -149,8 +149,9 @@ void CProxyOperSettingDialog::OnBnClickedButtonIn()
 void CProxyOperSettingDialog::OnBnClickedButtonOut()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	int sel = m_ctlCust.GetCurSel();
-	if (sel < 0 || sel > m_ctlCust.GetCount() - 1)
+	//int sel = m_ctlCust.GetCurSel();
+	int sel = m_ctlProxyCust.GetCurSel();
+	if (sel < 0 || sel > m_ctlProxyCust.GetCount() - 1)
 		return;
 	m_ctlProxyCust.DeleteString(sel);
 }

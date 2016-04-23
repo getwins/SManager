@@ -5,7 +5,7 @@
 #include "SManager.h"
 #include "MyListCtrl.h"
 
-
+#include <boost/lexical_cast.hpp>
 // CMyListCtrl
 
 IMPLEMENT_DYNAMIC(CMyListCtrl, CMFCListCtrl)
@@ -89,6 +89,37 @@ HFONT CMyListCtrl::OnGetCellFont(int nRow, int nColum, DWORD dwData)
 		}
 	}
 	return NULL;
+}
+
+int CMyListCtrl::OnCompareItems(LPARAM lParam1, LPARAM lParam2, int iColumn)
+{
+	//return CMFCListCtrl::CompareProc(lParam1, lParam2, iColumn);
+	CString strItem1, strItem2;
+	LVFINDINFO lvfi;
+
+	lvfi.flags = LVFI_PARAM;
+	lvfi.lParam = lParam1;
+	strItem1 = GetItemText(FindItem(&lvfi, -1), iColumn);
+
+	lvfi.lParam = lParam2;
+	strItem2 = GetItemText(FindItem(&lvfi, -1), iColumn);
+
+	try {
+		double d1 = boost::lexical_cast<double>(strItem1.GetBuffer());
+		double d2 = boost::lexical_cast<double>(strItem2.GetBuffer());
+		if (d1 > d2)
+			return 1;
+		else if (d1 < d2)
+			return -1;
+	}
+	catch (std::exception &err)
+	{
+		return strcmp(strItem1, strItem2);
+	}
+	//×Ö·û´®±È½Ï
+	
+
+	return 0;
 }
 
 
