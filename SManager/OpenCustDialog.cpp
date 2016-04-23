@@ -96,10 +96,13 @@ bool COpenCustDialog::CallOpenCust_851000(BCHANDLE handle)
 	BCSetStringFieldByName(handle, 0, "stx_pwd", m_TradePasswd.GetBuffer()); //交易密码
 	BCSetStringFieldByName(handle, 0, "swithdraw_pwd", m_MoneyPasswd.GetBuffer()); //资金密码
 
+	/*disable select cust class*/
+	/*
 	char cust_class[13] = { 0 };
 	memset(cust_class, '_', sizeof(cust_class) - 1);
 	strcpy(cust_class, m_ctlCustClass.GetCurSelKey());
 	BCSetStringFieldByName(handle, 0, "sserial1", cust_class); //客户类
+	*/
 	
 	return MyBCRequest(handle, FetchRowFunc_t(), BCMSG_ERR_TOALL);
 }
