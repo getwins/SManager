@@ -229,7 +229,7 @@ void CTradeView::ResetList()
 			cust_trade_st &t = (*tv)[i];
 			m_listctrl.InsertItem(i, intfmt(t.tradeseq));
 			m_listctrl.SetItemText(i, 1, t.instrumentid);
-			m_listctrl.SetItemText(i, 2, theApp.DictToStr(DICT_CALSS_BUY_SELL, t.direction));
+			m_listctrl.SetItemText(i, 2, theApp.DictToStr(DICT_CLASS_BUY_SELL, t.direction));
 			m_listctrl.SetItemText(i, 3, theApp.DictToStr(DICT_CLASS_OFFSET_FLAG, t.offset_flag));
 			m_listctrl.SetItemText(i, 4, inst_pricefmt(t.instrumentid, t.price));
 			m_listctrl.SetItemText(i, 5, intfmt(t.volume));

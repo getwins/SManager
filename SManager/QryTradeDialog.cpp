@@ -85,7 +85,7 @@ void CQryTradeDialog::OnBnClickedButtonQuery()
 		m_listctrl.InsertItem(i, str);
 		m_listctrl.SetItemText(i, 1, t.time);
 		m_listctrl.SetItemText(i, 2, t.instrumentid);
-		m_listctrl.SetItemText(i, 3, theApp.DictToStr(DICT_CALSS_BUY_SELL, t.direction));
+		m_listctrl.SetItemText(i, 3, theApp.DictToStr(DICT_CLASS_BUY_SELL, t.direction));
 		m_listctrl.SetItemText(i, 4, theApp.DictToStr(DICT_CLASS_OFFSET_FLAG, t.offset_flag));
 		str.Format("%f", t.price);
 		m_listctrl.SetItemText(i, 5, str);

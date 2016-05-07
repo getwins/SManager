@@ -483,7 +483,7 @@ CString CQrySettlementDialog::format_trade()
 		memset(buff, 0, sizeof(buff));
 		sprintf(buff, "%-10s%-12s%-10s%-10s%-6s%-6s%-6s%-8d%-15.2f%-15.2f\r\n",
 			it->date, it->exchangeid, it->productid, inst,
-			theApp.DictToStr(DICT_CALSS_BUY_SELL, it->direction),
+			theApp.DictToStr(DICT_CLASS_BUY_SELL, it->direction),
 			theApp.DictToStr(DICT_CLASS_OFFSET_FLAG, it->offset_flag),
 			theApp.DictToStr(DICT_CLASS_HEDGE_FLAG, it->hedge_flag),
 			it->volume, it->price, it->commission);
@@ -510,7 +510,7 @@ CString CQrySettlementDialog::format_od()
 		strcat(inst, it->delivery_date);
 		sprintf(buff, "%-10s%-12s%-10s%-10s%-6s%-8d%-15.2f%-10s%-15.2f%-15.2f%-15.2f\r\n",
 			it->close_date, it->exchangeid, it->product, inst,
-			theApp.DictToStr(DICT_CALSS_BUY_SELL, it->direction),
+			theApp.DictToStr(DICT_CLASS_BUY_SELL, it->direction),
 			it->volume, it->close_price, it->open_date, it->open_price, it->yd_settle_price, it->hold_profit);
 		str += buff;
 	}
@@ -534,7 +534,7 @@ CString CQrySettlementDialog::format_pd()
 		strcat(inst, it->delivery_date);
 		sprintf(buff, "%-10s%-12s%-10s%-10s%-6s%-6s%-8d%-15.2f%-15.2f%-15.2f%-15.2f%-15.2f\r\n",
 			it->open_date, it->exchangeid, it->product, inst,
-			theApp.DictToStr(DICT_CALSS_BUY_SELL, it->direction),
+			theApp.DictToStr(DICT_CLASS_BUY_SELL, it->direction),
 			theApp.DictToStr(DICT_CLASS_HEDGE_FLAG, it->hedge_flag),
 			it->volume, it->hold_price, it->yd_settle_price, it->td_settle_price, it->float_profit, it->hold_margin);
 		str += buff;

@@ -52,7 +52,7 @@ void CQryPositionDialog::OnBnClickedButtonQuery()
 		for (int i = 0; i < m_vPosition.size(); i++) {
 			cust_position_st &p = m_vPosition[i];
 			m_listctrl.InsertItem(i, p.instrumentid);
-			m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CALSS_BUY_SELL, p.direction));
+			m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CLASS_BUY_SELL, p.direction));
 			str.Format("%d", p.positions);
 			m_listctrl.SetItemText(i, 2, str);
 			str.Format("%f", p.hold_average_price);

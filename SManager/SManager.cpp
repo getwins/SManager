@@ -1129,7 +1129,7 @@ BOOL CSManagerApp::InitInstance()
 	// 更改用于存储设置的注册表项
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
-	SetRegistryKey(_T("SMana7"));
+	SetRegistryKey(_T("SMana8"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
 
 

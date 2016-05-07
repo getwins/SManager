@@ -55,7 +55,7 @@ void CQryOrderDialg::OnBnClickedButtonQuery()
 		m_listctrl.InsertItem(i, str);
 		m_listctrl.SetItemText(i, 1, o.order_time);
 		m_listctrl.SetItemText(i, 2, o.instrumentid);
-		m_listctrl.SetItemText(i, 3, theApp.DictToStr(DICT_CALSS_BUY_SELL, o.direction));
+		m_listctrl.SetItemText(i, 3, theApp.DictToStr(DICT_CLASS_BUY_SELL, o.direction));
 		m_listctrl.SetItemText(i, 4, theApp.DictToStr(DICT_CLASS_OFFSET_FLAG, o.offset_flag));
 		str.Format("%f", o.order_price);
 		m_listctrl.SetItemText(i, 5, str);

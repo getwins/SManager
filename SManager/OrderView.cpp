@@ -200,7 +200,7 @@ void COrderView::ResetList()
 		str.Format("%d", o.orderseq);
 		m_listctrl.InsertItem(item, str);
 		m_listctrl.SetItemText(item, 1, o.instrumentid);
-		m_listctrl.SetItemText(item, 2, theApp.DictToStr(DICT_CALSS_BUY_SELL, o.direction));
+		m_listctrl.SetItemText(item, 2, theApp.DictToStr(DICT_CLASS_BUY_SELL, o.direction));
 		m_listctrl.SetItemText(item, 3, theApp.DictToStr(DICT_CLASS_OFFSET_FLAG, o.offset_flag));
 		const char *order_status = theApp.DictToStr(DICT_CLASS_ORDER_STATUS, o.order_status);
 		m_listctrl.SetItemText(item, 4, order_status);

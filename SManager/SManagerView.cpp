@@ -518,6 +518,7 @@ void CSManagerView::ResetListCustBaseInfo(const cust_base_info_st &cbi)
 		m_listctrl.SetCellFontWeigth(i, 2, fw);
 		m_listctrl.SetItemText(i, 2, theApp.DictToStr(DICT_CLASS_CUST_STATUS, cbi.basic.sstatus0));
 
+		//强平线
 		std::vector<rc_desc_st>::const_iterator it = std::find_if(cbi.rcs.begin(), cbi.rcs.end(),
 			[](const rc_desc_st &desc)->bool { return strcmp(desc.classflag, "0002") == 0; });
 		if (it != cbi.rcs.end())
@@ -563,9 +564,10 @@ void CSManagerView::HandleCustDynamicInfo_LoginInfo(const std::string & cust_no)
 	cust_login_info_st &cur_li = m_mLoginInfo[cust_no];
 	const cust_login_info_st &new_li = cust_dynamic_info_worker::instance()->get_cust_login_info(cust_no);
 	
-	for (int i = 0; i < m_CurCBIs.size(); i++)
+	for (int i = 0; i < m_listctrl.GetItemCount(); i++)
 	{
-		if (cust_no == m_CurCBIs[i].basic.scust_no) 
+		CString text_cust_no = m_listctrl.GetItemText(i, 0);
+		if (cust_no == text_cust_no.GetBuffer())
 		{
 			if (strcmp(cur_li.login_status, new_li.login_status))
 			{
@@ -576,43 +578,59 @@ void CSManagerView::HandleCustDynamicInfo_LoginInfo(const std::string & cust_no)
 				}
 				else
 				{
-					m_listctrl.SetCellTextColor(i, 13, COLOR_BLACK);
+					//m_listctrl.SetCellTextColor(i, 13, COLOR_BLACK);
+					m_listctrl.SetCellTextColor(i, 14, COLOR_BLACK);
 					m_listctrl.SetItemText(i, 14, "登出");
 				}
-				
+
 			}
 
 			cur_li = new_li;
 			break;
 		}
-		
+
 	}
+
+	//for (int i = 0; i < m_CurCBIs.size(); i++)
+	//{
+	//	if (cust_no == m_CurCBIs[i].basic.scust_no) 
+	//	{
+	//		if (strcmp(cur_li.login_status, new_li.login_status))
+	//		{
+	//			if (new_li.login_status[0] == '1')
+	//			{
+	//				m_listctrl.SetCellTextColor(i, 14, COLOR_GREEN);
+	//				m_listctrl.SetItemText(i, 14, "登入");
+	//			}
+	//			else
+	//			{
+	//				//m_listctrl.SetCellTextColor(i, 13, COLOR_BLACK);
+	//				m_listctrl.SetCellTextColor(i, 14, COLOR_BLACK);
+	//				m_listctrl.SetItemText(i, 14, "登出");
+	//			}
+	//			
+	//		}
+
+	//		cur_li = new_li;
+	//		break;
+	//	}
+	//	
+	//}
 }
 
 void CSManagerView::HandleCustDynamicInfo_Capital(const std::string & cust_no)
 {
 	cust_capital_st &cur_cap = m_mCapital[cust_no];
 	const cust_capital_st &new_cap = cust_dynamic_info_worker::instance()->get_cust_capital(cust_no);
-	for (int i = 0; i < m_CurCBIs.size(); i++)
+
+	for (int i = 0; i < m_listctrl.GetItemCount(); i++)
 	{
-		//CString str;
-		if (cust_no == m_CurCBIs[i].basic.scust_no)
+		CString text_cust_no = m_listctrl.GetItemText(i, 0);
+		if (cust_no == text_cust_no.GetBuffer())
 		{
-			//COLORREF clr;
-			//int fw;
-			//if (cur_cap.yd_balance != new_cap.yd_balance) {
-			//str.Format("%f", new_cap.yd_balance);
 			m_listctrl.SetItemText(i, 3, fundfmt(new_cap.yd_balance));
-			//}
-			//if (cur_cap.available != new_cap.available) {
-			//str.Format("%f", new_cap.available);
 			m_listctrl.SetItemText(i, 4, fundfmt(new_cap.available));
-			//}
-			//if (cur_cap.dynamic_capital != new_cap.dynamic_capital) {
-			//str.Format("%f", new_cap.dynamic_capital);
 			m_listctrl.SetItemText(i, 5, fundfmt(new_cap.dynamic_capital));
-			//}
-			//if (cur_cap.offset_profit != new_cap.offset_profit) {
 			if (new_cap.offset_profit > 0) {
 				m_listctrl.SetCellTextColor(i, 7, COLOR_RED);
 			}
@@ -620,60 +638,107 @@ void CSManagerView::HandleCustDynamicInfo_Capital(const std::string & cust_no)
 				m_listctrl.SetCellTextColor(i, 7, COLOR_GREEN);
 			}
 			m_listctrl.SetCellFontWeigth(i, 7, FW_HEAVY);
-			//str.Format("%f", new_cap.offset_profit);
 			m_listctrl.SetItemText(i, 7, fundfmt(new_cap.offset_profit));
-			//}
-			//if (cur_cap.float_profit != new_cap.float_profit) {
+
 			if (new_cap.float_profit > 0)
 				m_listctrl.SetCellTextColor(i, 8, COLOR_RED);
 			else if (new_cap.float_profit < 0)
 				m_listctrl.SetCellTextColor(i, 8, COLOR_GREEN);
 			m_listctrl.SetCellFontWeigth(i, 8, FW_HEAVY);
-			//str.Format("%f", new_cap.float_profit);
 			m_listctrl.SetItemText(i, 8, fundfmt(new_cap.float_profit));
-			//}
-
-			//if (cur_cap.margin != new_cap.margin) {
-			//str.Format("%f", new_cap.margin);
 			m_listctrl.SetItemText(i, 9, fundfmt(new_cap.margin));
-			//}
-			//if (cur_cap.buy_frzn_margin != new_cap.buy_frzn_margin || cur_cap.sell_frzn_margin != new_cap.sell_frzn_margin) {
-			//str.Format("%f", new_cap.buy_frzn_margin + new_cap.sell_frzn_margin);
 			m_listctrl.SetItemText(i, 10, fundfmt(new_cap.buy_frzn_margin + new_cap.sell_frzn_margin));
-			//}
-			//if (cur_cap.commission != new_cap.commission) {
-			//str.Format("%f", new_cap.commission);
 			m_listctrl.SetItemText(i, 11, fundfmt(new_cap.commission));
-			//}
-			//if (cur_cap.frzn_commission != new_cap.frzn_moeny) {
-			//str.Format("%f", new_cap.frzn_commission);
 			m_listctrl.SetItemText(i, 12, fundfmt(new_cap.frzn_commission));
-			//}
-			//str.Format("%f", new_cap.frzn_moeny);
 			m_listctrl.SetItemText(i, 13, fundfmt(new_cap.frzn_moeny));
-
-			//if (new_cap.risk_level[0] == '0') {
-			//	m_listctrl.SetCellTextColor(i, 13, COLOR_BLACK);
-			//	m_listctrl.SetCellFontWeigth(i, 13, FW_NORMAL);
-			//}
-			//else if (new_cap.risk_level[0] == '1') {
-			//	m_listctrl.SetCellTextColor(i, 13, COLOR_BLUE);
-			//	m_listctrl.SetCellFontWeigth(i, 13, FW_MEDIUM);
-			//}else if (new_cap.risk_level[0] == '2') {
-			//	m_listctrl.SetCellTextColor(i, 13, COLOR_RED);
-			//	m_listctrl.SetCellFontWeigth(i, 13, FW_BOLD);
-			//}else if (new_cap.risk_level[0] == '3') {
-			//	m_listctrl.SetCellTextColor(i, 13, COLOR_RED);
-			//	m_listctrl.SetCellFontWeigth(i, 13, FW_HEAVY);
-			//}
-			//m_listctrl.SetItemText(i, 13, theApp.DictToStr(DICT_CLASS_RISK_LEVEL, new_cap.risk_level));
-
 			m_listctrl.SetItemText(i, 15, theApp.DictToStr(DICT_CLASS_CURRENCY, new_cap.scurrency_type));
 			cur_cap = new_cap;
 			break;
 		}
 
 	}
+
+	//for (int i = 0; i < m_CurCBIs.size(); i++)
+	//{
+	//	//CString str;
+	//	if (cust_no == m_CurCBIs[i].basic.scust_no)
+	//	{
+	//		//COLORREF clr;
+	//		//int fw;
+	//		//if (cur_cap.yd_balance != new_cap.yd_balance) {
+	//		//str.Format("%f", new_cap.yd_balance);
+	//		m_listctrl.SetItemText(i, 3, fundfmt(new_cap.yd_balance));
+	//		//}
+	//		//if (cur_cap.available != new_cap.available) {
+	//		//str.Format("%f", new_cap.available);
+	//		m_listctrl.SetItemText(i, 4, fundfmt(new_cap.available));
+	//		//}
+	//		//if (cur_cap.dynamic_capital != new_cap.dynamic_capital) {
+	//		//str.Format("%f", new_cap.dynamic_capital);
+	//		m_listctrl.SetItemText(i, 5, fundfmt(new_cap.dynamic_capital));
+	//		//}
+	//		//if (cur_cap.offset_profit != new_cap.offset_profit) {
+	//		if (new_cap.offset_profit > 0) {
+	//			m_listctrl.SetCellTextColor(i, 7, COLOR_RED);
+	//		}
+	//		else if (new_cap.offset_profit < 0) {
+	//			m_listctrl.SetCellTextColor(i, 7, COLOR_GREEN);
+	//		}
+	//		m_listctrl.SetCellFontWeigth(i, 7, FW_HEAVY);
+	//		//str.Format("%f", new_cap.offset_profit);
+	//		m_listctrl.SetItemText(i, 7, fundfmt(new_cap.offset_profit));
+	//		//}
+	//		//if (cur_cap.float_profit != new_cap.float_profit) {
+	//		if (new_cap.float_profit > 0)
+	//			m_listctrl.SetCellTextColor(i, 8, COLOR_RED);
+	//		else if (new_cap.float_profit < 0)
+	//			m_listctrl.SetCellTextColor(i, 8, COLOR_GREEN);
+	//		m_listctrl.SetCellFontWeigth(i, 8, FW_HEAVY);
+	//		//str.Format("%f", new_cap.float_profit);
+	//		m_listctrl.SetItemText(i, 8, fundfmt(new_cap.float_profit));
+	//		//}
+
+	//		//if (cur_cap.margin != new_cap.margin) {
+	//		//str.Format("%f", new_cap.margin);
+	//		m_listctrl.SetItemText(i, 9, fundfmt(new_cap.margin));
+	//		//}
+	//		//if (cur_cap.buy_frzn_margin != new_cap.buy_frzn_margin || cur_cap.sell_frzn_margin != new_cap.sell_frzn_margin) {
+	//		//str.Format("%f", new_cap.buy_frzn_margin + new_cap.sell_frzn_margin);
+	//		m_listctrl.SetItemText(i, 10, fundfmt(new_cap.buy_frzn_margin + new_cap.sell_frzn_margin));
+	//		//}
+	//		//if (cur_cap.commission != new_cap.commission) {
+	//		//str.Format("%f", new_cap.commission);
+	//		m_listctrl.SetItemText(i, 11, fundfmt(new_cap.commission));
+	//		//}
+	//		//if (cur_cap.frzn_commission != new_cap.frzn_moeny) {
+	//		//str.Format("%f", new_cap.frzn_commission);
+	//		m_listctrl.SetItemText(i, 12, fundfmt(new_cap.frzn_commission));
+	//		//}
+	//		//str.Format("%f", new_cap.frzn_moeny);
+	//		m_listctrl.SetItemText(i, 13, fundfmt(new_cap.frzn_moeny));
+
+	//		//if (new_cap.risk_level[0] == '0') {
+	//		//	m_listctrl.SetCellTextColor(i, 13, COLOR_BLACK);
+	//		//	m_listctrl.SetCellFontWeigth(i, 13, FW_NORMAL);
+	//		//}
+	//		//else if (new_cap.risk_level[0] == '1') {
+	//		//	m_listctrl.SetCellTextColor(i, 13, COLOR_BLUE);
+	//		//	m_listctrl.SetCellFontWeigth(i, 13, FW_MEDIUM);
+	//		//}else if (new_cap.risk_level[0] == '2') {
+	//		//	m_listctrl.SetCellTextColor(i, 13, COLOR_RED);
+	//		//	m_listctrl.SetCellFontWeigth(i, 13, FW_BOLD);
+	//		//}else if (new_cap.risk_level[0] == '3') {
+	//		//	m_listctrl.SetCellTextColor(i, 13, COLOR_RED);
+	//		//	m_listctrl.SetCellFontWeigth(i, 13, FW_HEAVY);
+	//		//}
+	//		//m_listctrl.SetItemText(i, 13, theApp.DictToStr(DICT_CLASS_RISK_LEVEL, new_cap.risk_level));
+
+	//		m_listctrl.SetItemText(i, 15, theApp.DictToStr(DICT_CLASS_CURRENCY, new_cap.scurrency_type));
+	//		cur_cap = new_cap;
+	//		break;
+	//	}
+
+	//}
 	DisplaySummary();
 }
 

@@ -249,7 +249,7 @@ void CPositionView::ResetList()
 			cust_position_st &p = m_vPosition[i];
 			m_listctrl.InsertItem(i, p.instrumentid);
 			m_listctrl.SetCellFontWeigth(i, 1, FW_HEAVY);
-			m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CALSS_BUY_SELL, p.direction));
+			m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CLASS_BUY_SELL, p.direction));
 			m_listctrl.SetItemText(i, 2, intfmt(p.positions));
 			m_listctrl.SetItemText(i, 3, intfmt(p.positions - p.td_positions));
 			m_listctrl.SetItemText(i, 4, intfmt(p.can_offset_vol));
@@ -286,7 +286,7 @@ void CPositionView::ResetList()
 			cust_td_position_detail_st &pd = m_vPosiDetail[i];
 			m_listctrl.InsertItem(i, pd.instrumentid);
 			m_listctrl.SetCellFontWeigth(i, 1, FW_HEAVY);
-			m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CALSS_BUY_SELL, pd.direction));
+			m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CLASS_BUY_SELL, pd.direction));
 			//str.Format("%d", pd.volume);
 			m_listctrl.SetItemText(i, 2, intfmt(pd.volume));
 			if (strcmp(pd.trade_date, pd.open_date))
@@ -533,7 +533,7 @@ void CPositionView::initPosiDetailLastPrice()
 //		cust_position_st &p = m_vPosition[i];
 //		m_listctrl.InsertItem(i, p.instrumentid);
 //		//str.Format("%d", p.)
-//		m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CALSS_BUY_SELL, p.direction));
+//		m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CLASS_BUY_SELL, p.direction));
 //		str.Format("%d", p.positions);
 //		m_listctrl.SetItemText(i, 2, str);
 //		str.Format("%d", p.positions - p.td_positions);
@@ -555,7 +555,7 @@ void CPositionView::initPosiDetailLastPrice()
 //	for (int i = 0; i < m_vPosiDetail.size(); i++) {
 //		cust_td_position_detail_st &pd = m_vPosiDetail[i];
 //		m_listctrl.InsertItem(i, pd.instrumentid);
-//		m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CALSS_BUY_SELL, pd.direction));
+//		m_listctrl.SetItemText(i, 1, theApp.DictToStr(DICT_CLASS_BUY_SELL, pd.direction));
 //		str.Format("%d", pd.volume);
 //		m_listctrl.SetItemText(i, 2, str);
 //		str.Format("%f", pd.hold_price);

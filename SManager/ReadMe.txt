@@ -98,3 +98,5 @@ note
 	客户权益视图启用排序
 	导出客户信息文件格式伪xls
 	代理移除客户BUG修改
+4. version 0.6.5.7
+	客户列表经过排序之后客户信息显示错误，通过listctrl.itemtext找到cust_no

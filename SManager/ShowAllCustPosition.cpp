@@ -110,7 +110,7 @@ void CShowAllCustPosition::ShowPosition()
 		m_listctrl.InsertItem(index, it->cust_no);
 		//m_listctrl.SetItemText(index, 1, cbi.sname);
 		m_listctrl.SetItemText(index, 1, it->instrumentid);
-		m_listctrl.SetItemText(index, 2, theApp.DictToStr(DICT_CALSS_BUY_SELL, it->direction));
+		m_listctrl.SetItemText(index, 2, theApp.DictToStr(DICT_CLASS_BUY_SELL, it->direction));
 		//str.Format("%d", it->positions);
 		m_listctrl.SetItemText(index, 3, intfmt(it->positions));
 		//str.Format("%d", it->positions - it->td_positions);
@@ -137,7 +137,7 @@ void CShowAllCustPosition::ShowPosition()
 	//		m_listctrl.InsertItem(index, p.cust_no);
 	//		m_listctrl.SetItemText(index, 1, cbi.sname);
 	//		m_listctrl.SetItemText(index, 2, p.instrumentid);
-	//		m_listctrl.SetItemText(index, 3, theApp.DictToStr(DICT_CALSS_BUY_SELL, p.direction));
+	//		m_listctrl.SetItemText(index, 3, theApp.DictToStr(DICT_CLASS_BUY_SELL, p.direction));
 	//		//str.Format("%d", p.positions);
 	//		m_listctrl.SetItemText(index, 4, intfmt(p.positions));
 	//		//str.Format("%d", p.positions - p.td_positions);
