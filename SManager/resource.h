@@ -143,6 +143,8 @@
 #define IDI_ICON2                       390
 #define IDR_POPUP_CUST_PROXY_QUERY      391
 #define IDD_BANKACCOUNT                 393
+#define IDD_CUST_TRADE_PRODUCT_LIMIT    394
+#define IDD_CUST_TRADE_PRODUCT_LIMIT_SETTING 395
 #define IDC_LIST_POSITION               1000
 #define IDC_RADIO_POSITION              1001
 #define IDC_RADIO_POSITION_DETAIL       1002
@@ -156,6 +158,8 @@
 #define ID_BTN_CANCEL                   1010
 #define IDC_COMBO_EXCHANGE              1012
 #define IDC_COMBO_TRADE_STATUS          1013
+#define IDC_COMBO_EXCHANGE2             1013
+#define IDC_COMBO_LIMIT_TYPE            1013
 #define IDC_LIST_PRODUCT                1014
 #define IDC_COMBO_PRODUCT               1016
 #define IDC_LIST_INSTRUMENT             1017
@@ -254,6 +258,7 @@
 #define IDC_EDIT1                       1113
 #define IDC_                            1113
 #define IDC_EDIT_BANKACCOUNT            1114
+#define IDC_LIST_CUST_TRADE_PRODUCT_LIMIT 1114
 #define ID_32772                        32772
 #define ID_32773                        32773
 #define ID_PS_POSITION                  32774
@@ -383,9 +388,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        396
+#define _APS_NEXT_RESOURCE_VALUE        397
 #define _APS_NEXT_COMMAND_VALUE         32936
-#define _APS_NEXT_CONTROL_VALUE         1114
+#define _APS_NEXT_CONTROL_VALUE         1115
 #define _APS_NEXT_SYMED_VALUE           320
 #endif
 #endif

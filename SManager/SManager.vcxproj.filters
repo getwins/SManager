@@ -198,6 +198,12 @@
     <ClInclude Include="BankAccountMgrDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CustTradeProductLimitDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CustTradeProductLimitSettingDailog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SManager.cpp">
@@ -357,6 +363,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="BankAccountMgrDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CustTradeProductLimitDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CustTradeProductLimitSettingDailog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

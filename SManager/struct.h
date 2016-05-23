@@ -931,3 +931,28 @@ struct bank_account_st
 	char bank_cust_no[201];
 	char bank_oper_code[11];
 };
+
+
+//FUNCTION 854151 Description  "客户品种限制设置"
+//输入：操作员 INPUT:SCUST_NO
+//客户号 	SHOLDER_AC_NO
+//品种 SSTOCK_CODE
+//交割期 SDATE1
+//投保 SSTATUS4
+//限制类型 SSTATUS3
+//备注信息 SADDR2
+//操作标志（1增加3删除） SSTATUS0
+//交易所代码 SMARKET_CODE
+//交易类别  SMAIN_FLA
+
+struct trade_product_limit_st
+{
+	char oper_code[11];
+	char cust_no[16];
+	char productid[9];
+	char delivery_date[9];
+	char offset_flag[2];
+	char limit_type[2];
+	//char flag[2];
+	char exchangeid[2];
+};

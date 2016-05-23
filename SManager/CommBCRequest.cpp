@@ -804,3 +804,44 @@ BCResult BCRequestQryBankFuture_858222(BCHANDLE handle, bank_account_st &ba)
 	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
 	return MyBCRequest(handle, fetcher);
 }
+
+
+BCResult BCRequestQryTradeProductLimit_854152(BCHANDLE handle, char *cust_no, std::vector<trade_product_limit_st> &tpls)
+{
+	FetchRowFunc_t fetcher = [&](BCHANDLE handle, int row)
+	{
+		trade_product_limit_st tpl = { 0 };
+		BCGetStringFieldByName(handle, row, "scust_no", tpl.oper_code, sizeof(tpl.oper_code));
+		BCGetStringFieldByName(handle, row, "sholder_ac_no", tpl.cust_no, sizeof(tpl.cust_no));
+		BCGetStringFieldByName(handle, row, "sbank_code", tpl.productid, sizeof(tpl.productid));
+		BCGetStringFieldByName(handle, row, "sdate1", tpl.delivery_date, sizeof(tpl.delivery_date));
+		BCGetStringFieldByName(handle, row, "sstatus4", tpl.offset_flag, sizeof(tpl.offset_flag));
+		BCGetStringFieldByName(handle, row, "sstatus3", tpl.limit_type, sizeof(tpl.limit_type));
+		BCGetStringFieldByName(handle, row, "smarket_code", tpl.exchangeid, sizeof(tpl.exchangeid));
+		tpls.push_back(tpl);
+	};
+
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854152);
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", cust_no);
+	return MyBCRequest(handle, fetcher);
+}
+
+BCResult BCRequestSetTradeProductLimit_854151(BCHANDLE handle, char *flag, trade_product_limit_st &tpl)
+{
+	BCResetHandle(handle);
+	BCSetRequestType(handle, 854152);
+
+	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
+	BCSetStringFieldByName(handle, 0, "sholder_ac_no", tpl.cust_no);
+	BCSetStringFieldByName(handle, 0, "sbank_code", tpl.productid);
+	BCSetStringFieldByName(handle, 0, "sdate1", tpl.delivery_date);
+	BCSetStringFieldByName(handle, 0, "sstatus4", "0"); //Í¶±£
+	BCSetStringFieldByName(handle, 0, "sstatus3", tpl.limit_type);
+	BCSetStringFieldByName(handle, 0, "smarket_code", tpl.exchangeid);
+	BCSetStringFieldByName(handle, 0, "sstatus0", flag);
+
+	return MyBCRequest(handle);
+
+}

@@ -45,3 +45,6 @@ BCResult BCRequestBankFutureSignin_858111(BCHANDLE handle, bank_account_st &ba);
 BCResult BCRequestBankFutureSignout_858112(BCHANDLE handle, bank_account_st &ba);
 BCResult BCRequestQryBankFuture_858222(BCHANDLE handle, bank_account_st &ba);
 
+BCResult BCRequestQryTradeProductLimit_854152(BCHANDLE handle, char *cust_no, std::vector<trade_product_limit_st> &tpls);
+BCResult BCRequestSetTradeProductLimit_854151(BCHANDLE handle, char *flag, trade_product_limit_st &tpl);
+

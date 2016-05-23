@@ -413,6 +413,8 @@ copy res\\mainframe2.ico res\\SManager.ico </Command>
     <ClInclude Include="CustRiskControlSettingDialog.h" />
     <ClInclude Include="CustStatusMaintainDialog.h" />
     <ClInclude Include="CustTemplateSettingDialog.h" />
+    <ClInclude Include="CustTradeProductLimitDialog.h" />
+    <ClInclude Include="CustTradeProductLimitSettingDailog.h" />
     <ClInclude Include="cust_dynamic_info_worker.h" />
     <ClInclude Include="DeleteCacheDialog.h" />
     <ClInclude Include="FileView.h" />
@@ -475,6 +477,8 @@ copy res\\mainframe2.ico res\\SManager.ico </Command>
     <ClCompile Include="CustRiskControlSettingDialog.cpp" />
     <ClCompile Include="CustStatusMaintainDialog.cpp" />
     <ClCompile Include="CustTemplateSettingDialog.cpp" />
+    <ClCompile Include="CustTradeProductLimitDialog.cpp" />
+    <ClCompile Include="CustTradeProductLimitSettingDailog.cpp" />
     <ClCompile Include="cust_dynamic_info_worker.cpp" />
     <ClCompile Include="DeleteCacheDialog.cpp" />
     <ClCompile Include="FileView.cpp" />
