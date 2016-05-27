@@ -813,7 +813,8 @@ BCResult BCRequestQryTradeProductLimit_854152(BCHANDLE handle, char *cust_no, st
 		trade_product_limit_st tpl = { 0 };
 		BCGetStringFieldByName(handle, row, "scust_no", tpl.oper_code, sizeof(tpl.oper_code));
 		BCGetStringFieldByName(handle, row, "sholder_ac_no", tpl.cust_no, sizeof(tpl.cust_no));
-		BCGetStringFieldByName(handle, row, "sbank_code", tpl.productid, sizeof(tpl.productid));
+		//BCGetStringFieldByName(handle, row, "sbank_code", tpl.productid, sizeof(tpl.productid));
+		BCGetStringFieldByName(handle, row, "sstock_code", tpl.productid, sizeof(tpl.productid));
 		BCGetStringFieldByName(handle, row, "sdate1", tpl.delivery_date, sizeof(tpl.delivery_date));
 		BCGetStringFieldByName(handle, row, "sstatus4", tpl.offset_flag, sizeof(tpl.offset_flag));
 		BCGetStringFieldByName(handle, row, "sstatus3", tpl.limit_type, sizeof(tpl.limit_type));
@@ -831,11 +832,12 @@ BCResult BCRequestQryTradeProductLimit_854152(BCHANDLE handle, char *cust_no, st
 BCResult BCRequestSetTradeProductLimit_854151(BCHANDLE handle, char *flag, trade_product_limit_st &tpl)
 {
 	BCResetHandle(handle);
-	BCSetRequestType(handle, 854152);
+	BCSetRequestType(handle, 854151);
 
 	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
 	BCSetStringFieldByName(handle, 0, "sholder_ac_no", tpl.cust_no);
-	BCSetStringFieldByName(handle, 0, "sbank_code", tpl.productid);
+	//BCSetStringFieldByName(handle, 0, "sbank_code", tpl.productid);
+	BCSetStringFieldByName(handle, 0, "sstock_code", tpl.productid);
 	BCSetStringFieldByName(handle, 0, "sdate1", tpl.delivery_date);
 	BCSetStringFieldByName(handle, 0, "sstatus4", "0"); //Í¶±£
 	BCSetStringFieldByName(handle, 0, "sstatus3", tpl.limit_type);

@@ -40,6 +40,7 @@
 #include "CustCommissionDialog.h"
 #include "CustMarginDialog.h"
 #include "BankAccountMgrDialog.h"
+#include "CustTradeProductLimitDialog.h"
 
 
 // CSManagerView
@@ -83,6 +84,7 @@ BEGIN_MESSAGE_MAP(CSManagerView, CView)
 	ON_COMMAND(ID_CUST_MARGIN_RATE_SETTING, &CSManagerView::OnCustMarginRateSetting)
 	ON_COMMAND(ID_BANKACCOUT, &CSManagerView::OnBankaccout)
 	ON_COMMAND(ID_EXPORT_CUSTINFO, &CSManagerView::OnExportCustinfo)
+	ON_COMMAND(ID_CUST_TRADE_PRODUCT_LIMIT_SETTING, &CSManagerView::OnCustTradeProductLimitSetting)
 END_MESSAGE_MAP()
 
 // CSManagerView 构造/析构
@@ -1221,4 +1223,18 @@ void CSManagerView::OnExportCustinfo()
 	}
 
 	ofs.close();
+}
+
+
+void CSManagerView::OnCustTradeProductLimitSetting()
+{
+	// TODO: 在此添加命令处理程序代码
+	CCustTradeProductLimitDialog dlg;
+	int sel = m_listctrl.GetSelectionMark();
+	if (sel >= 0 && sel < m_listctrl.GetItemCount())
+	{
+		CString cust_no = m_listctrl.GetItemText(sel, 0);
+		dlg.m_ctlCust.SelectKey(cust_no);
+	}
+	dlg.DoModal();
 }

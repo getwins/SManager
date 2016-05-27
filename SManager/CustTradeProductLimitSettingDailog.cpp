@@ -40,6 +40,8 @@ void CCustTradeProductLimitSettingDailog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CCustTradeProductLimitSettingDailog, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CCustTradeProductLimitSettingDailog::OnBnClickedOk)
+	ON_CBN_SELCHANGE(IDC_COMBO_EXCHANGE, &CCustTradeProductLimitSettingDailog::OnCbnSelchangeComboExchange)
 END_MESSAGE_MAP()
 
 
@@ -67,7 +69,7 @@ BOOL CCustTradeProductLimitSettingDailog::OnInitDialog()
 		GetDlgItem(IDC_COMBO_PRODUCT)->EnableWindow(FALSE);
 		GetDlgItem(IDC_COMBO_CUST)->EnableWindow(FALSE);
 		GetDlgItem(IDC_EDIT_DELIVERY_DATE)->EnableWindow(FALSE);
-
+		GetDlgItem(IDC_COMBO_LIMIT_TYPE)->EnableWindow(FALSE);
 	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -86,14 +88,35 @@ void CCustTradeProductLimitSettingDailog::OnBnClickedOk()
 	Scoped_BCHANDLE handle;
 	trade_product_limit_st tpl = { 0 };
 	CString cust_no = m_ctlCust.GetCurSelKey();
+	if (cust_no.GetLength() == 0)
+	{
+		MessageBox("请选择客户");
+		return;
+	}
 	CString exchangeid = m_ctlExchange.GetCurSelKey();
+	if (exchangeid.GetLength() == 0)
+	{
+		MessageBox("请选择交易所");
+		return;
+	}
 	CString productid = m_ctlProduct.GetCurSelKey();
+	if (productid.GetLength() == 0)
+	{
+		MessageBox("请选择品种");
+		return;
+	}
+	CString limit_type = m_LimitType.GetCurSelKey();
+	if (limit_type.GetLength() == 0)
+	{
+		MessageBox("请选择限制类型");
+		return;
+	}
 
 	strcpy(tpl.cust_no, cust_no);
 	strcpy(tpl.exchangeid, exchangeid);
 	strcpy(tpl.productid, productid);
 	strcpy(tpl.delivery_date, m_date);
-
+	strcpy(tpl.limit_type, limit_type);
 
 	BCResult result = BCRequestSetTradeProductLimit_854151(handle, m_flag.GetBuffer(), tpl);
 	if (result)

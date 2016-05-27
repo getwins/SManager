@@ -8,7 +8,7 @@
 
 #include "CommBCRequest.h"
 #include "Format.h"
-#include "CustTradeProductLimitDialog.h"
+#include "CustTradeProductLimitSettingDailog.h"
 
 
 // CCustTradeProductLimitDialog 对话框
@@ -70,6 +70,7 @@ void CCustTradeProductLimitDialog::OnBnClickedButtonQuery()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	m_listctrl.DeleteAllItems();
+	m_tpls.clear();
 	CString cust_no = m_ctlCust.GetCurSelKey();
 	if (cust_no.GetLength() == 0)
 		return;
@@ -83,8 +84,16 @@ void CCustTradeProductLimitDialog::OnBnClickedButtonQuery()
 		m_listctrl.InsertItem(item, it->cust_no);
 		m_listctrl.SetItemText(item, 1, it->exchangeid);
 		m_listctrl.SetItemText(item, 2, it->productid);
-		m_listctrl.SetItemText(item, 2, it->delivery_date);
-		m_listctrl.SetItemText(item, 3, it->limit_type);
+		m_listctrl.SetItemText(item, 3, it->delivery_date);
+		//m_listctrl.SetItemText(item, 4, it->limit_type);
+		if (strcmp(it->limit_type, "0") == 0)
+		{
+			m_listctrl.SetItemText(item, 4, "只可平仓");
+		}
+		else if (strcmp(it->limit_type, "1") == 0)
+		{
+			m_listctrl.SetItemText(item, 4, "禁止交易");
+		}
 	}
 }
 
@@ -116,11 +125,12 @@ void CCustTradeProductLimitDialog::OnBnClickedButtonModify()
 	}
 
 	CCustTradeProductLimitSettingDailog dlg;
-	cust_margin_rate_st cmr = m_tpls[sel];
+	trade_product_limit_st tpl = m_tpls[sel];
 	dlg.m_flag = "2";
-	dlg.m_ctlCust.SelectKey(cmr.cust_no);
-	dlg.m_ctlExchange.SelectKey(cmr.exchangeid);
-	dlg.m_ctlProduct.SelectKey(cmr.productid);
+	dlg.m_ctlCust.SelectKey(tpl.cust_no);
+	dlg.m_ctlExchange.SelectKey(tpl.exchangeid);
+	dlg.m_ctlProduct.SelectKey(tpl.productid);
+	dlg.m_LimitType.SelectKey(tpl.limit_type);
 	//dlg.m_ByAmt = cmr.margin_rate_by_money;
 	//dlg.m_ByVol = cmr.margin_rate_by_volume;
 
@@ -146,13 +156,14 @@ void CCustTradeProductLimitDialog::OnBnClickedButtonDelete()
 	}
 
 	CCustTradeProductLimitSettingDailog dlg;
-	cust_margin_rate_st cmr = m_tpls[sel];
+	trade_product_limit_st tpl = m_tpls[sel];
 	dlg.m_flag = "3";
-	dlg.m_ctlCust.SelectKey(cmr.cust_no);
-	dlg.m_ctlExchange.SelectKey(cmr.exchangeid);
-	dlg.m_ctlProduct.SelectKey(cmr.productid);
-	dlg.m_ByAmt = cmr.margin_rate_by_money;
-	dlg.m_ByVol = cmr.margin_rate_by_volume;
+	dlg.m_ctlCust.SelectKey(tpl.cust_no);
+	dlg.m_ctlExchange.SelectKey(tpl.exchangeid);
+	dlg.m_ctlProduct.SelectKey(tpl.productid);
+	dlg.m_LimitType.SelectKey(tpl.limit_type);
+	//dlg.m_ByAmt = cmr.margin_rate_by_money;
+	//dlg.m_ByVol = cmr.margin_rate_by_volume;
 
 	//if (dlg.DoModal() != IDCANCEL)
 	//{

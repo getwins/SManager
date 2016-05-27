@@ -455,6 +455,7 @@ BEGIN
         MENUITEM "出入金",                         ID_MONEY_IN_OUT
         MENUITEM "客户风控规则设置",                    ID_CUST_RISK_CONTROL_SETTING
         MENUITEM "银行账户管理",                      ID_BANKACCOUT
+        MENUITEM "客户交易品种限制设置",                  ID_CUST_TRADE_PRODUCT_LIMIT_SETTING
     END
     POPUP "交易管理"
     BEGIN
@@ -572,6 +573,7 @@ BEGIN
         MENUITEM "显示所有客户持仓",                    ID_SHOW_ALL_CUST_POSITION
         MENUITEM "银行账户管理",                      ID_BANKACCOUT
         MENUITEM "导出客户信息",                      ID_EXPORT_CUSTINFO
+        MENUITEM "客户交易品种限制设置",                  ID_CUST_TRADE_PRODUCT_LIMIT_SETTING
     END
 END
 
@@ -1493,7 +1495,7 @@ BEGIN
     IDD_CUST_TRADE_PRODUCT_LIMIT_SETTING, DIALOG
     BEGIN
         RIGHTMARGIN, 300
-        TOPMARGIN, 3
+        TOPMARGIN, 2
         BOTTOMMARGIN, 203
     END
 END
@@ -1745,15 +1747,6 @@ IDD_BANKACCOUNT DLGINIT
 BEGIN
     IDC_COMBO_BANK, 0x403, 11, 0
 0x2d32, 0xa4b9, 0xccc9, 0xf8d2, 0xd0d0, "\000" 
-    0
-END
-
-IDD_CUST_TRADE_PRODUCT_LIMIT_SETTING DLGINIT
-BEGIN
-    IDC_COMBO_LIMIT_TYPE, 0x403, 11, 0
-0x2d31, 0xbbd6, 0xc9bf, 0xbdc6, 0xd6b2, "\000" 
-    IDC_COMBO_LIMIT_TYPE, 0x403, 11, 0
-0x2d32, 0xfbbd, 0xb9d6, 0xbbbd, 0xd7d2, "\000" 
     0
 END
 

@@ -76,3 +76,12 @@ public:
 	virtual void PreSubclassWindow();
 	int m_level;
 };
+
+class CTradeLimitTypeComboBox : public CKVhyphenComboBox
+{
+public:
+	DECLARE_DYNAMIC(CTradeLimitTypeComboBox)
+
+	DECLARE_MESSAGE_MAP()
+	virtual void PreSubclassWindow();
+};

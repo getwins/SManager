@@ -31,7 +31,8 @@ public:
 	CString m_date;
 
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnCbnSelchangeComboExchange();
 	virtual BOOL OnInitDialog();
 
-	CComboBox m_LimitType;
+	CTradeLimitTypeComboBox m_LimitType;
 };

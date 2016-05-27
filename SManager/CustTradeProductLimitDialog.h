@@ -16,11 +16,11 @@ public:
 	enum { IDD = IDD_CUST_TRADE_PRODUCT_LIMIT };
 #endif
 
-protected:
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 
 	DECLARE_MESSAGE_MAP()
-
+public:
 	std::vector<trade_product_limit_st> m_tpls;
 	CCustComboBox m_ctlCust;
 	CListCtrl m_listctrl;

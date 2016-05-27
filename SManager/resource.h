@@ -158,7 +158,6 @@
 #define ID_BTN_CANCEL                   1010
 #define IDC_COMBO_EXCHANGE              1012
 #define IDC_COMBO_TRADE_STATUS          1013
-#define IDC_COMBO_EXCHANGE2             1013
 #define IDC_COMBO_LIMIT_TYPE            1013
 #define IDC_LIST_PRODUCT                1014
 #define IDC_COMBO_PRODUCT               1016
@@ -383,13 +382,17 @@
 #define ID_BUTTON32932                  32932
 #define ID_32934                        32934
 #define ID_EXPORT_CUSTINFO              32935
+#define ID_32936                        32936
+#define ID_CUST_TRADE_PRODUCT_LIMIT     32937
+#define ID_CUST_TRADE_PRODUCT_LIMIT_SETTING 32938
+#define ID_32939                        32939
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        397
-#define _APS_NEXT_COMMAND_VALUE         32936
+#define _APS_NEXT_COMMAND_VALUE         32940
 #define _APS_NEXT_CONTROL_VALUE         1115
 #define _APS_NEXT_SYMED_VALUE           320
 #endif

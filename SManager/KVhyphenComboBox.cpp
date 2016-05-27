@@ -276,3 +276,24 @@ void CCustClassComboBox::PreSubclassWindow()
 			this->AddString(CString(var.subclass_no) + "-" + var.subclass_name);
 	}
 }
+
+IMPLEMENT_DYNAMIC(CTradeLimitTypeComboBox, CKVhyphenComboBox)
+
+BEGIN_MESSAGE_MAP(CTradeLimitTypeComboBox, CKVhyphenComboBox)
+END_MESSAGE_MAP()
+
+void CTradeLimitTypeComboBox::PreSubclassWindow()
+{
+	this->AddString(CString("0-只可仓"));
+	this->AddString(CString("1-禁止交易"));
+
+	if (m_SelKey.GetLength() > 0)
+	{
+		if(m_SelKey == "0")
+			this->SetCurSel(0);
+		else if(m_SelKey == "1")
+			this->SetCurSel(1);
+	}
+
+	CKVhyphenComboBox::PreSubclassWindow();
+}
