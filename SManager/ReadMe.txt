@@ -100,3 +100,7 @@ note
 	代理移除客户BUG修改
 4. version 0.6.5.7
 	客户列表经过排序之后客户信息显示错误，通过listctrl.itemtext找到cust_no
+5. version 1.6.5.28
+	添加客户交易品种限制功能
+	去掉smanager.cpp程序时间限制
+	大版本变为1.0

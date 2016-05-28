@@ -1045,7 +1045,7 @@ void SetWindowsCaption()
 	it2 = std::find_if(theApp.m_perms.begin(), theApp.m_perms.end(), [](oper_sm_perm_st &perm) { return strcmp(perm.type, "002") == 0; });
 	//FindResourceEx()
 	CString caption;
-	caption.Format("后台管理系统 v0.6-%s 开户数量:%s 使用期限:%s",
+	caption.Format("后台管理系统 v1.0-%s 开户数量:%s 使用期限:%s",
 		g_cfg.oper_code, 
 		(it1 == theApp.m_perms.end() ? "无设置" : it1->param),
 		(it2 == theApp.m_perms.end() ? "无设置" : it2->param));
@@ -1104,10 +1104,10 @@ BOOL CSManagerApp::InitInstance()
 
 	CWinAppEx::InitInstance();
 
-	time_t n = time(NULL);
-	tm *t = localtime(&n);
-	if (t->tm_mon > 8)
-		return FALSE;
+	//time_t n = time(NULL);
+	//tm *t = localtime(&n);
+	//if (t->tm_mon > 8)
+	//	return FALSE;
 	// 初始化 OLE 库
 	if (!AfxOleInit())
 	{
@@ -1129,7 +1129,7 @@ BOOL CSManagerApp::InitInstance()
 	// 更改用于存储设置的注册表项
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
-	SetRegistryKey(_T("SMana8"));
+	SetRegistryKey(_T("SManager"));
 	LoadStdProfileSettings(4);  // 加载标准 INI 文件选项(包括 MRU)
 
 

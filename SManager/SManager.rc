@@ -1179,7 +1179,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "客户交易品种限制"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "修改",IDC_BUTTON_MODIFY,275,242,50,14
+    DEFPUSHBUTTON   "修改",IDC_BUTTON_MODIFY,275,242,50,14,WS_DISABLED
     PUSHBUTTON      "删除",IDC_BUTTON_DELETE,345,242,50,14
     COMBOBOX        IDC_COMBO_CUST,56,7,87,205,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "客户列表",IDC_STATIC,18,7,37,8
@@ -1217,8 +1217,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,6,5,7
- PRODUCTVERSION 0,6,5,7
+ FILEVERSION 1,6,5,28
+ PRODUCTVERSION 1,6,5,28
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1235,12 +1235,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "TODO: getwin"
             VALUE "FileDescription", "SManager"
-            VALUE "FileVersion", "0.6.5.7"
+            VALUE "FileVersion", "1.6.5.28"
             VALUE "InternalName", "SManager.exe"
             VALUE "LegalCopyright", "TODO:  (C) getwin。  保留所有权利。"
             VALUE "OriginalFilename", "SManager.exe"
             VALUE "ProductName", "TODO: SManager"
-            VALUE "ProductVersion", "0.6.5.7"
+            VALUE "ProductVersion", "1.6.5.28"
         END
     END
     BLOCK "VarFileInfo"
