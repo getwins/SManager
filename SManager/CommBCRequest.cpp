@@ -843,6 +843,7 @@ BCResult BCRequestSetTradeProductLimit_854151(BCHANDLE handle, char *flag, trade
 	BCSetStringFieldByName(handle, 0, "sstatus3", tpl.limit_type);
 	BCSetStringFieldByName(handle, 0, "smarket_code", tpl.exchangeid);
 	BCSetStringFieldByName(handle, 0, "sstatus0", flag);
+	BCSetStringFieldByName(handle, 0, "smain_flag", "0");//交易类别 期货
 
 	return MyBCRequest(handle);
 

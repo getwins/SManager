@@ -284,7 +284,7 @@ END_MESSAGE_MAP()
 
 void CTradeLimitTypeComboBox::PreSubclassWindow()
 {
-	this->AddString(CString("0-只可仓"));
+	this->AddString(CString("0-只可平仓"));
 	this->AddString(CString("1-禁止交易"));
 
 	if (m_SelKey.GetLength() > 0)
