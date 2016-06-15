@@ -218,7 +218,7 @@ BCResult BCRequestSetCustCommissionRate_851304(BCHANDLE handle, char *flag, cust
 	BCSetStringFieldByName(handle, 0, "scust_no", g_cfg.oper_code);
 	BCSetStringFieldByName(handle, 0, "sstatus0", flag);
 	BCSetStringFieldByName(handle, 0, "sholder_ac_no", ccr.cust_no);
-	BCSetStringFieldByName(handle, 0, "sstatus2", "0");
+	BCSetStringFieldByName(handle, 0, "sstatus2", "0"); //交易类别 期货
 	BCSetStringFieldByName(handle, 0, "smarket_code", ccr.exchangeid);
 	BCSetStringFieldByName(handle, 0, "sstock_code", ccr.productid);
 	BCSetStringFieldByName(handle, 0, "sdate0", ccr.delivery_date);
@@ -242,6 +242,8 @@ BCResult BCRequestSetCustCommissionRate_851304(BCHANDLE handle, char *flag, cust
 	BCSetDoubleFieldByName(handle, 0, "damt33", ccr.commission_rate_by_volume);
 	BCSetDoubleFieldByName(handle, 0, "damt0", ccr.commission_rate_by_money);
 	BCSetDoubleFieldByName(handle, 0, "damt1", ccr.commission_rate_by_volume);
+
+	BCSetStringFieldByName(handle, 0, "smain_flag2", "0");//交易类别 期货
 
 	return MyBCRequest(handle);
 }
@@ -328,6 +330,7 @@ BCResult BCRequestQryCustCommissionRate_851305(BCHANDLE handle, char *cust_no, s
 //公司标准			sstatus1
 //套利保证金按金额收取			damt6
 //套利保证金率按手数收取 */			damt7
+//交易类别	  smain_flag2
 
 BCResult BCRequestSetCustMarginRate_851312(BCHANDLE handle, char *flag, cust_margin_rate_st &cmr)
 {
@@ -344,6 +347,7 @@ BCResult BCRequestSetCustMarginRate_851312(BCHANDLE handle, char *flag, cust_mar
 	BCSetDoubleFieldByName(handle, 0, "damt5", cmr.margin_rate_by_volume);
 	BCSetDoubleFieldByName(handle, 0, "damt6", cmr.margin_rate_by_money);
 	BCSetDoubleFieldByName(handle, 0, "damt7", cmr.margin_rate_by_volume);
+	BCSetStringFieldByName(handle, 0, "smain_flag2", "0");//交易类别 期货
 	return MyBCRequest(handle);
 }
 
