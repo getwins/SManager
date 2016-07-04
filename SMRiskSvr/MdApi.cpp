@@ -14,6 +14,7 @@
 #include "KSMarketDataAPI.h"
 #include "main.h"
 #include "conf.h"
+#include "MyBCRequest.h"
 
 std::atomic_bool g_login(false);
 
@@ -92,6 +93,8 @@ public:
 
 				//if (!pp.empty())
 				//	m_pUserApi->SubscribeMarketData(&pp[0], pp.size());
+
+
 				std::unique_lock<std::mutex> lkc(g_MarketMutex);
 				for (std::set<std::string>::iterator it = g_SubInst.begin(); it != g_SubInst.end(); ++it)
 				{
@@ -171,6 +174,33 @@ public:
 			//	g_mMarket[pDepthMarketData->InstrumentID] = *pDepthMarketData;
 			//	
 			//}
+			if (pDepthMarketData->LastPrice == 0.0
+				|| pDepthMarketData->UpperLimitPrice == 0.0
+				|| pDepthMarketData->LowerLimitPrice == 0.0
+				|| pDepthMarketData->AskPrice1 == 0.0
+				|| pDepthMarketData->BidPrice1 == 0.0)
+			{
+				Scoped_BCHANDLE handle;
+				inst_market_st md = { 0 };
+				BCResult result = BCRequestInstMarketData_851503(handle, pDepthMarketData->InstrumentID, md);
+				if (result)
+				{
+					pDepthMarketData->LastPrice = md.last_price;
+					pDepthMarketData->BidPrice1 = md.bid_price;
+					pDepthMarketData->BidVolume1 = md.bid_vol;
+					pDepthMarketData->AskPrice1 = md.ask_price;
+					pDepthMarketData->AskVolume1 = md.ask_vol;
+					pDepthMarketData->UpperLimitPrice = md.upperlimit_price;
+					pDepthMarketData->LowerLimitPrice = md.lowerlimit_price;
+					pDepthMarketData->OpenPrice = md.open_price;
+					pDepthMarketData->PreClosePrice = md.pre_close_price;
+					pDepthMarketData->HighestPrice = md.highest_price;
+					pDepthMarketData->LowestPrice = md.lowest_price;
+					pDepthMarketData->SettlementPrice = md.settlement_price;
+					pDepthMarketData->Volume = md.volume;
+				}
+			}
+
 			std::unique_lock<std::mutex> lkc(g_MarketMutex);
 			depth_market_data_st dmd= { 0 };
 			memcpy(&dmd, pDepthMarketData, sizeof(dmd));
