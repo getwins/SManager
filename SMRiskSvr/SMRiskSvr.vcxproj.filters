@@ -51,4 +51,9 @@
   <ItemGroup>
     <Xml Include="conf.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SMRiskSvr.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
 </Project>
