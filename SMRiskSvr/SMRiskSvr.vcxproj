@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="conf.cpp" />
+    <ClCompile Include="logger.cpp" />
     <ClCompile Include="MdApi.cpp" />
     <ClCompile Include="MyBCRequest.cpp" />
     <ClCompile Include="SMRiskSvr.cpp" />

@@ -44,7 +44,8 @@
     <ClCompile Include="conf.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MdApi.cpp">
+    <ClCompile Include="MdApi.cpp" />
+    <ClCompile Include="logger.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
