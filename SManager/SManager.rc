@@ -1217,8 +1217,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,7,7,4
- PRODUCTVERSION 1,7,7,4
+ FILEVERSION 1,7,10,20
+ PRODUCTVERSION 1,7,10,20
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1235,12 +1235,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "TODO: getwin"
             VALUE "FileDescription", "SManager"
-            VALUE "FileVersion", "1.7.7.4"
+            VALUE "FileVersion", "1.7.10.20"
             VALUE "InternalName", "SManager.exe"
             VALUE "LegalCopyright", "TODO:  (C) getwin。  保留所有权利。"
             VALUE "OriginalFilename", "SManager.exe"
             VALUE "ProductName", "TODO: SManager"
-            VALUE "ProductVersion", "1.7.7.4"
+            VALUE "ProductVersion", "1.7.10.20"
         END
     END
     BLOCK "VarFileInfo"

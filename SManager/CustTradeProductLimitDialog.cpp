@@ -131,6 +131,7 @@ void CCustTradeProductLimitDialog::OnBnClickedButtonModify()
 	dlg.m_ctlExchange.SelectKey(tpl.exchangeid);
 	dlg.m_ctlProduct.SelectKey(tpl.productid);
 	dlg.m_LimitType.SelectKey(tpl.limit_type);
+	dlg.m_date = tpl.delivery_date;
 	//dlg.m_ByAmt = cmr.margin_rate_by_money;
 	//dlg.m_ByVol = cmr.margin_rate_by_volume;
 
@@ -162,6 +163,7 @@ void CCustTradeProductLimitDialog::OnBnClickedButtonDelete()
 	dlg.m_ctlExchange.SelectKey(tpl.exchangeid);
 	dlg.m_ctlProduct.SelectKey(tpl.productid);
 	dlg.m_LimitType.SelectKey(tpl.limit_type);
+	dlg.m_date = tpl.delivery_date;
 	//dlg.m_ByAmt = cmr.margin_rate_by_money;
 	//dlg.m_ByVol = cmr.margin_rate_by_volume;
 
